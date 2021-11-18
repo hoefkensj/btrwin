@@ -1,18 +1,15 @@
 #!/usr/bin/env python
 import os,btrfsutil
-import conf
 import debug as d
 
 d.print('btrfsctl')
-
-
 
 def get_dirs(parent):
 	return [os.path.join(parent, name) for name in os.listdir(parent) if os.path.isdir(os.path.join(parent, name))]
 
 def get_subvs(parent):
 	subvs=[]
-	list=get_dirs('/mnt/btrd0v1/opt/BTRWin/subv')
+	list=get_dirs(parent)
 	for dir in list:
 		if btrfsutil.is_subvolume(dir):
 		

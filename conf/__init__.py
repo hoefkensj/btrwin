@@ -1,7 +1,8 @@
 #!/usr/bin/env python
+import debug as d
+from . import confctl as main
+from . import conf_base as BASE
 
-import __main__
-import confctl
-global glob_config
-glob_config = confctl.from_globconf()
-print('test')
+#global glob_config
+d.print('glob from globconf')
+glob = main.from_globconf()

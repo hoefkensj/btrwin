@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-print('fuck off')
+import os,sys
 
 def main():
-	pass
+	os.system('cd ~/')
 
 
 if __name__ == '__main__':

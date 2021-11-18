@@ -1,16 +1,12 @@
 #!/usr/bin/env python
-import conf
-conf.glob_config['dev']= { 'debug'  : 1}
+from sys import stdout
+
 
 def print(*a):
-	if conf.glob_config['dev']['debug']==1 :
-		print(a)
+	for item in a :
+		stdout.write(f'{item} ')
+	stdout.write(f'\n')
+	return
 	
 	
 
-def main():
-	print('main ran')
-
-
-if __name__ == '__main__':
-	main()

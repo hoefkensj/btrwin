@@ -1,8 +1,3 @@
 #!/usr/bin/env python
-print(f'imported {__name__}')
-def main():
-	pass
+from . import btrfsctl as main
 
-
-if __name__ == '__main__':
-	main()
