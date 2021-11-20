@@ -1,0 +1,12 @@
+#	glob/
+#	|--etc/
+#	|	|--betterwin/
+#	|	|	|--betterwin.conf:
+#	|	|	|	|-[DEFAULT]
+#	|	|	|	|	+-> SELF : /etc/betterwin/betterwin.conf
+#	|	|	|	|-[PATH]
+#	|	|	|	|
+
+CONF= {
+	'ETC_BETTERWIN_BETTERWIN'	:	{}
+	'HOME_USER_CONFIG_BETTTERWIN_BETTERWIN'	:

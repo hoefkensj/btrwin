@@ -1,124 +1,97 @@
 #!/usr/bin/env python
 from configparser import ConfigParser,ExtendedInterpolation
 import os
-from functools import partial
-from debug import *
-from . import conf_base as BASE
-
 
 
 def new():
 	cfg = ConfigParser(interpolation=ExtendedInterpolation(), delimiters=':')  # create empty config
 	cfg.optionxform = lambda option: option
-	print('new configparser config created')
 	return cfg
 	
 def get_dirs(parent):
 	dirs=[os.path.join(parent, name) for name in os.listdir(parent) if os.path.isdir(os.path.join(parent, name))]
 	return dirs
+
+def get_config(**k):
+	config=k['config']
+	path=k['path']
+	config.read(path)
+	return config
 	
-class From: #class used as function namespace so from.subfunction is valid beats having to make a casedict for it wen subfunctions
+def save_to_file(file,conf):
+	with open(file, 'w') as file:
+		conf.write(file)
+	return
 	
-	def file(file):
-		print('from file')
-		config=new()
-		config.read(file)
-		return config
+def construct_global_config():
+	glob={}
+	files=[]
+	path='/etc/betterwin/betterwin.conf'
+	glob['betterwin'] = get_config(path=os.path.join(path),config=new())
+	path=os.path.join(os.getenv("HOME"),'.config/betterwin.conf')
+	files += [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
+	cfg_files=[f for f in files if f[-5:] == '.conf']
+	for cfg in cfg_files:
+		glob[cfg[:-5]] = get_config(path=os.path.join(path,cfg),config=new())
+	return glob
 
-	def dict(dct):
-		config=new()
-		for key in dct.keys():
-			if isinstance(key,dict):
-				subcfg=new()
-				for subkey in dct[key].keys():
-					subcfg[subkey]= dct[key][subkey]
-				dct[key] = subcfg
-			config[key] = dct[key]
-		return config
-	
-	def sysconf(conf_sys=BASE.CONF['SYS'] ):																				# reads config from system configfile /etc/betterwin/sys.conf
-		dct=To.dict(From.file(conf_sys))
-		return dct
+def save_global_config(glob):
+	for configfile in glob.keys():
+		if configfile == 'betterwin':
+			sudopath='/etc/betterwin/betterwin.conf'
+			continue
+		else:
+			path=os.path.join(os.getenv("HOME"),'.config/betterwin.conf',f'{configfile}.conf')
+		config=glob[configfile]
+		save_to_file(path,config)
+		
+def show_setting(glob,**k):
+	# for idx,configfile in enumerate(glob.keys()):
+	# 	print(idx, '\t:\t',configfile)
+	if 'file' in k:
+		file = k['file']
+		print(f'|->{file}/')
+		config=glob[file]
+		if 'section' in k:
+			section=k['section']
+			print(f'|\t|->{section}:')
+			#print(config.sections())
+			if section in config.sections():
+				#print(glob[file][section])
+				if 'key' in k:
+					key=k['key']
+					if key in config[section].keys():
+						print(f'|\t|\t|->{key}\t:\t{glob[file][section][key]}')
+						print()
+					else:
+						print('key does not exist')
+				else:
+					print(dict(glob[file][section]).keys())
+			else:
+				print('section does not exist')
+		#print({section: dict(config[section]) for section in config.sections()})
+		
+	else:
+		print(glob.keys())
 
-	def userconf():																			# reads the users conf from files in .config
-		user_conf = {}
-		sysconf=From.sysconf()
-		name=sysconf['GENERAL']['name']
-		conf=f'{name}.conf'
-		path=os.path.join(os.getenv("HOME"),'.config/',conf)
-		files = [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
-		cfg_files=[f for f in files if f[-5:] == '.conf']
-		for cfg in cfg_files:
-			user_conf[cfg[:-5]] = To.dict(From.file(os.path.join(path, cfg)))
-		return user_conf
+def set_setting(glob,**k):
+	if 'file' in k:
+		file = k['file']
+		print(f'|->{file}/')
+		if file not in glob.keys():
+			glob[file]=new()
+		config=glob[file]
+		section=k['section']
+		print(f'|\t|->{section}:')
+		if section not in config.sections():
+			glob[file][section]={}
+		key=k['key']
+		val=k['value']
+		glob[file][section][key]=val
+		print(f'|\t|\t|->{key}\t:\t{glob[file][section][key]}')
+		save_global_config(glob)
+		return glob
 
-class To: #subfucntion class not a real class
+set_setting(construct_global_config(),file='file2' , section='test', key='keya',value='testb')
+show_setting(construct_global_config(),file='file2' , section='test', key='keya')
 
-	def file(file,conf):																			# writes config to file
-		with open(file, 'w') as file:
-			conf.write(file)
-		return
-
-	def dict(conf):																				# turns config into dict
-		dct={}
-		for section in conf:
-			dct[section]= dict(conf[section])
-		return dct
-	
-	def sysconf(conf,conf_sys=BASE.CONF['SYS']):																			# writes config to system configfile /etc/betterwin/sys.conf
-		with open(conf_sys, 'w') as file:
-			conf.write(file)
-		return
-	
-	def userconf(glob_config):
-		sys=glob_config.pop('SYS', None) 															# if sys in glob conf remove it
-		sysconf=From.sysconf()																		#load dict sysconf form_sysconf
-		name=f'{sysconf["GENERAL"]["name"]}.conf'													# construct the name for the folder
-		path=os.path.join(os.getenv("HOME"),'.config',name)											# construct the full path
-		if not os.path.exists(path):
-			os.makedirs(path)
-		for key in glob_config.keys():
-			file=os.path.join(path,f'{key}.conf')
-			cfg = From.dict(glob_config[key])
-			To.file(conf=cfg,file=file)
-		return
-
-def from_globconf():
-	usercfg=From.userconf()
-	syscfg={'SYS': From.sysconf()}
-	globcfg={}
-	for key in syscfg.keys():
-		globcfg[key]= syscfg[key]
-	for key in usercfg.keys():
-		globcfg[key]= usercfg[key]
-	return  globcfg
-	
-def debug_fromglobconf(config):
-	for section in config.keys():
-		print(section)
-		section=config[section]
-		#print(section.keys())
-		#d.print('main:',section)
-		if isinstance(section,dict):
-			for subsection in section.keys():
-				print(subsection,section[subsection])
-				subsection=section[subsection]
-				if isinstance(subsection,dict):
-					for unit in subsection.keys():
-						print(unit,subsection[unit])
-						unit=subsection[unit]
-						if isinstance(unit,dict):
-							for key in unit.keys():
-								print(key,unit[key])
-		return
-
-
-
-
-if __name__ == '__main__' :
-	#config = From.sysconf()
-	#To.userconf(glob_dict)
-	config=from_globconf()
-	print(BASE.CONF['SYS'])
-	print(config)
-	print(config['SYS'])
