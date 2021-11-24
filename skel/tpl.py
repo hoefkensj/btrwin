@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import debug as d
 import os
 def dirs(USERNAME):
 	DIRS={}
@@ -7,28 +6,11 @@ def dirs(USERNAME):
 			'drive_c':{
 				'programfiles': {},
 				'programfilesx86':{},
-				'programdata': {
-						'microsoft': {
-							'windows': {},
-						},
-				},
-				'users': {
-					USERNAME: {
-						'appdata': {
-							'roaming': {},
-						},
-					},
-				},
+				'programdata': {'microsoft': {'windows': {},},},
+				'users': {USERNAME: {'appdata': {'roaming': {},},},},
 				'start': {},
 			},
-			'meta':{
-				'bin': {},
-				'etc':	{},
-				'lib': {
-					'icons' : {},
-						},
-				'exe': {},
-			},
+			'meta':{'bin': {},'etc':{},'lib': {'icons' : {},},'exe': {},},
 			'apps' : {},
 	}
 	d.print(DIRS)

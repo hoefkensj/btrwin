@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/betterwin.iml" filepath="$PROJECT_DIR$/.idea/betterwin.iml" />
+      <module fileurl="file://$USER_HOME$/.config/betterwin.conf/.idea/betterwin.conf.iml" filepath="$USER_HOME$/.config/betterwin.conf/.idea/betterwin.conf.iml" />
     </modules>
   </component>
 </project>

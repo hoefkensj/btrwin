@@ -1,9 +1,7 @@
 #!/usr/bin/env python
-import os,sys
+import confctl
 
-def main():
-	os.system('cd ~/')
+confctl.conf_base.init()
 
 
-if __name__ == '__main__':
-	main()
+print(confctl.glob)

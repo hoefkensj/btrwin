@@ -1,132 +1,49 @@
 #!/usr/bin/env python
-import conf
-import btrfs
+import confctl
+import fsctl
 from functools import partial
 import debug as d
-import os,datetime,sys
+import os,datetime
 import skel
 from subprocess import Popen,PIPE
 
-
-
-
-
-def create_template(*,USERNAME,settings,name):
-
-
+def tpl_name(*a,**k):
 		
-	def new_subvol():
-	
-		def tpl_name(*,exist,bit,name,subv):  #creates the name for a template tpl-Win64_YYYYMMDDvX
-			prefix = name
-			win=f'Win{bit}'
-			creation_date= ''.join(str(datetime.date.today()).split('-')) #get date today xxxx-xx-xx remove - and join
-			version=0
-			exists=True
-			while exists:
-				version+=1
-				init_name=f'{prefix}-{win}_{creation_date}v{version}'
-				d.print(init_name)
-				init_path=os.path.join(subv,init_name)
-				if init_path in existing:
-					d.print('found')
-					exists= True
-				else :
-					d.print('not found')
-					name=init_name
-					d.print(name)
-					exists= False
-			return name
-	
-	
-		existing	= btrfs.get_subvs(dir_subv)
-		name 		= tpl_name(exist=existing,bit=settings['bit'],subv=dir_subv)
-		before		= btrfs.get_subvs(dir_subv)
-		btrfs.create_subv(dir_subv, name)
-		dir_tpl		= os.path.join(dir_subv,name)
-		after		= btrfs.get_subvs(dir_subv)
-		diff 		= [subv for subv in after if subv not in before][0]
-		if diff == dir_tpl :
-			d.print('successfully created subvolume', name)
-			return name
-		#TODO write settings to meta/etc/
-		#Todo write settings to ~/.config/?/tplname
-		return False
+		bit=k['bit']
+		subv=confctl.glob['betterwin']['PATH']['subv']
+		exist= fsctl.btrfsctl.get_subvs(subv)
+		prefix = 'tpl'
 		
-	def populate_template(tpl):
-		DIRS=skel.tpl.dirs(USERNAME=USERNAME)
-		create_struct(DIRS['tpl'], tpl)
-		d.print('dirs created')
-		skel.tpl.lnks(tpl=tpl,USERNAME=USERNAME)
-		d.print('symlinks created')
-		#link wine to /loader
-		#populate /meta/bin
-		#
-		return True
-	
-	def link_loader(tpl,loader='wine',edition='lutris',version='default' ):
-		PATHSYS=conf.glob['SYS']['PATH']['sys']
-		LOADERS=os.path.join(PATHSYS,'loaders')
-		LDRPATH=os.path.join(LOADERS,loader)
-		PATH=f'{LDRPATH}/{edition}-{version}'
-		link=os.path.join(tpl,'loader')
-		d.print(PATH)
-		os.symlink(PATH,link)
-		return link
-	
-	def boot(wineboot,env):
-		sproc= partial( Popen, env=env, stdout=PIPE,
-					universal_newlines=True,
-					shell=True)
-		process=sproc(wineboot)
-		ret = ''
-		while True:
-			output = process.stdout.readline()
-			d.print(output.strip())
-			# Do something else
-			return_code = process.poll()
-			if return_code is not None:
-				ret= return_code
-				#wrl(f'RETURN CODE:{return_code}')
-				# Process has finished, read rest of the output
-				for output in process.stdout.readlines():
-					d.print(output.strip())
-				break
-		return ret
-	
-	PATHSYS		= conf.glob['SYS']['PATH']['sys']   #gets the system (betterwin) directory form config
-	dir_subv	= os.path.join(PATHSYS,'subv')		#appends subv to the above for the location of the subvolumes
-	#if name isnt specified generate one
-	existing	= btrfs.get_subvs(dir_subv)
-	
-	
-		#appends the name for the subvolume
-	created 	= new_subvol()
-	dir_tpl		= os.path.join(dir_subv,created)
-	status 		= populate_template(tpl=dir_tpl) if created else False
-	lldr		= link_loader(tpl=dir_tpl)
-	wineboot	= os.path.join(lldr,'bin','wineboot')
-	
-	#wine boot
-	env = {
-		**os.environ,
-		'WINEDEBUG' 			: 	'-all',
-		'WINEARCH'				:	'win64',
-		'WINEDLLOVERRIDES'		:	'winemenubuilder.exe=d ',
-		'WINEPREFIX' 			:	f'{dir_tpl}',
-		'WINELOADER'			:	f'{lldr}/bin/wine',
-		'WINESERVER'			:	f'{lldr}/bin/wineserver'
-	}
-	boot(wineboot=wineboot,env=env)
-	
-	
-	
-	
-	return status
-	
-	# create_template=partial(f_create_template ,glob_config=
+		win=f'Win{bit}'
+		creation_date= ''.join(str(datetime.date.today()).split('-')) #get date today xxxx-xx-xx remove - and join
+		version=0
+		exists=True
+		while exists:
+			version+=1
+			init_name=f'{prefix}-{win}_{creation_date}v{version}'
+			d.print(init_name)
+			init_path=os.path.join(subv,init_name)
+			if init_path in exist:
+				d.print('found')
+				exists= True
+			else :
+				d.print('not found')
+				name=init_name
+				d.print(name)
+				exists= False
+		return name
 
-	
+def populate_template(tpl):
+	DIRS=skel.tpl.dirs(USERNAME=os.environ['USER'])
+	create_struct(DIRS['tpl'], tpl)
+	d.print('dirs created')
+	skel.tpl.lnks(tpl=tpl,USERNAME=os.environ['USER'])
+	d.print('symlinks created')
+	#link wine to /loader
+	#populate /meta/bin
+	#
+	return True
+
 def create_struct(dic, path):
 	for name, info in dic.items():
 		next_path = path + "/" + name
@@ -134,34 +51,96 @@ def create_struct(dic, path):
 			os.makedirs(next_path)
 			create_struct(info, next_path)
 	return
+
+def link_loader(tpl,loader='wine',edition='lutris',version='default' ):
+	PATHSYS=confctl.glob['betterwin']['PATH']['sys']
+	LOADERS=os.path.join(PATHSYS,'loaders')
+	LDRPATH=os.path.join(LOADERS,loader)
+	PATH=f'{LDRPATH}/{edition}-{version}'
+	link=os.path.join(tpl,'loader')
+	d.print(PATH)
+	os.symlink(PATH,link)
+	return link
+
+def boot(wineboot,env):
+	sproc= partial(Popen, env=env, stdout=PIPE,universal_newlines=True,shell=True)
+	
+	process=Popen(wineboot ,env=env, stdout=PIPE,universal_newlines=True,shell=True)
+	ret = ''
+	while True:
+		output = process.stdout.readline()
+		d.print(output.strip())
+		# Do something else
+		return_code = process.poll()
+		if return_code is not None:
+			ret= return_code
+			#wrl(f'RETURN CODE:{return_code}')
+			# Process has finished, read rest of the output
+			for output in process.stdout.readlines():
+				d.print(output.strip())
+			break
+	return ret
+
+def new_subvol(**k):
+	name 		= k['name']
+	subv		= confctl.glob['betterwin']['PATH']['subv']
+	before		= fsctl.btrfsctl.get_subvs(subv)
+	tpl			= fsctl.btrfsctl.create_subv(subv, name)
+	after		= fsctl.btrfsctl.get_subvs(subv)
+	diff 		= [subvol for subvol in after if subvol not in before][0]
+	return name if diff == tpl else None
+	
+def create_template(settings):
+	
+	SYS=confctl.glob['betterwin']
+	SYS_PATH=SYS['PATH']['sys']
+	SYS_SUBV=SYS['PATH']['subv']
+	BIT=settings['BIT']
+	
+	#if name isnt specified generate one
+	
+	NAME		= tpl_name(bit=BIT)
+	NAME	 	= new_subvol(name=NAME)
+	TPL			= os.path.join(SYS_SUBV,NAME)
+	POPULATED	= populate_template(tpl=TPL)
+	LLDR		= link_loader(tpl=TPL,loader='wine',edition='lutris',version='default' )
+	LDR_BIN		= os.path.join(LLDR,'bin')
+	
+	TEMPLATE_PATH =	{
+	
+			'path' 	: f'{TPL}',
+			'bit'	: f'{BIT}',
+			'loader': f'{LLDR}'
+			}
+	confctl.set(file=NAME, section='PATH', key='path', value=TPL)
+	confctl.set(file=NAME, section='PATH', key='loader', value=LLDR)
+	# **os.environ
+	#wine boot
+	env = {
+		'file'					:	f'{NAME}'	,
+		'section'				:	'WINE_ENV',
+		'WINEDEBUG' 			: 	'-all',
+		'WINEARCH'				:	f'win{BIT}',
+		'WINEDLLOVERRIDES'		:	'winemenubuilder.exe=d ',
+		'WINE'					: 	f'{LLDR}',
+		'WINEPREFIX' 			:	f'{TPL}',
+		'WINELOADER'			:	f'{LDR_BIN}/wine',
+		'WINESERVER'			:	f'{LDR_BIN}/wineserver'}
+	confctl.confctl.set_dict(env)
+	
+	boot(wineboot=f'{LDR_BIN}/wineboot',env=env)
+	return
 	
 def main():
 
-	PATHSYS=conf.glob['SYS']['PATH']['sys']
-	d.print(PATHSYS)
+	SYS_PATH=confctl.glob['betterwin']['PATH']['sys']
 	set={}
-	set['bit']=64
-	USER=os.environ.get('USER')
-	dir_subv=os.path.join(PATHSYS,'subv')
-	list=btrfs.get_subvs(dir_subv)
-	d.print(list)
-	create_template(settings=set,USERNAME=USER)
-
-
-
-
+	set['BIT']=64
+	set['USER']=os.environ.get('USER')
+	create_template(settings=set)
 
 if __name__ == '__main__':
-	# print(conf.glob)
-	# print('SYS =')
-	# print("conf.glob['SYS']['GENERAL']\t\t\t\t	= " 	,conf.glob['SYS']['GENERAL'])
-	# print("conf.glob['SYS']['GENERAL']['name']\t\t	= " ,conf.glob['SYS']['GENERAL']['name'])
-	# print("conf.glob['SYS']['GENERAL']['btrmnt']\t	= " ,conf.glob['SYS']['GENERAL']['btrmnt'])
-	# print("conf.glob['SYS']['PATH']\t\t\t\t	= " 		,conf.glob['SYS']['PATH'])
-	# print("conf.glob['SYS']['PATH']['sys']\t\t\t	= " ,conf.glob['SYS']['GENERAL']['name'])
-
-
-	d.print('file1 =',conf.glob['file1'])
+	d.print('file1 =', confctl.glob['file1'])
 	main()
 	
 
