@@ -1,6 +1,6 @@
 import os,ast
-import confctl
-conf_pfx=confctl.glob['Office']
+import conf
+conf_pfx=conf.glob['Office']
 e= '''{
 'WINEDEBUG' 			: 	f"{conf_pfx['WINE_ENV']['WINEDEBUG']}",
 'WINEARCH'				:	f"{conf_pfx['WINE_ENV']['WINEARCH']}",

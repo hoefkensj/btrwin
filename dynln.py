@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-import confctl
+import conf
 
-confctl.conf_base.init()
+conf.conf_base.init()
 
 
-print(confctl.glob)
+print(conf.glob)
