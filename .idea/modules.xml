@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/betterwin.iml" filepath="$PROJECT_DIR$/.idea/betterwin.iml" />
-      <module fileurl="file://$USER_HOME$/.config/betterwin.conf/.idea/betterwin.conf.iml" filepath="$USER_HOME$/.config/betterwin.conf/.idea/betterwin.conf.iml" />
+      <module fileurl="file://$USER_HOME$/.config/btrwin.conf/.idea/betterwin.conf.iml" filepath="$USER_HOME$/.config/btrwin.conf/.idea/betterwin.conf.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../btrwin/.idea/btrwin.iml" filepath="$PROJECT_DIR$/../btrwin/.idea/btrwin.iml" />
     </modules>
   </component>
 </project>

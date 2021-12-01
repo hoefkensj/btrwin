@@ -2,7 +2,7 @@
 from setuptools import setup
 
 setup(
-    name="betterwin",
+    name="btrwin",
     version='0.1',
     py_modules=['hello'],
     install_requires=[
