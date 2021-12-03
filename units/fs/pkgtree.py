@@ -206,44 +206,58 @@ def ispkg(path):
 	:return: boolean (true for is package false if not )
 	"""
 	return True if True in [True for item in os.listdir(path) if  item == "__init__.py" ] else False
-
-def build_tree():
-	pass
-	
 def get_master():
 	"""
 	!!! warning breaks when __init__. is in everyfolder of the path up until /  !!!
 	gets the folder(path) that is the highest up in the path that still is a python package
 	"""
 	os.chdir(os.path.split(sys.argv[0])[0])
-	pkgs = ([path,ispkg(path) ]for path in  ['/'.join(os.path.split(sys.argv[0])[0].split('/')[:(len(os.path.split(sys.argv[0])[0].split('/'))-idx)]) for idx,folder in enumerate(reversed(os.path.split(
-	sys.argv[0])[0].split('/'))) if os.path.exists('/'.join(os.path.split(sys.argv[0])[0].split('/')[:(len(os.path.split(sys.argv[0])[0].split('/'))-idx)]))][:-1])
+	return [pkg[0] for pkg in ([path,ispkg(path) ]for path in  ['/'.join(os.path.split(sys.argv[0])[0].split('/')[:(len(os.path.split(sys.argv[0])[0].split('/'))-idx)]) for idx,folder in enumerate(reversed(os.path.split(
+		sys.argv[0])[0].split('/'))) if os.path.exists('/'.join(os.path.split(sys.argv[0])[0].split('/')[:(len(os.path.split(sys.argv[0])[0].split('/'))-idx)]))][:-1])if pkg[1] == True][-1]
+
+def tabs(n):
+	return (n*'    ')
+def level(n):
+	#special case:
+	level0=tabs(1)
+	if n==0:
+		return f'{level0}'
+
+	lvl=f'{tabs(1)}|'
+	lvls=n*lvl
+	prefix=f'\n{tabs(1)}{lvls}'
+	return prefix
+def ismodule(path):
+	if '.py' == path[:-3]:
+		pass
+	# utopio would test the file contents for the first line being #! to python
+	return True if True in [True for item in os.listdir(path) if  item == "__init__.py" ] else False
+def nothidden(listdir):
+	visible=[item for item in listdir if item[0] != '.']
+	
+	
+def build_tree():
+	pkgpath = get_master()
+	pkgname = os.path.split(pkgpath)[-1]
+	contents = os.listdir(path)
+	isfile=[item for item in contents if os.path.isfile(f'{path}/{item}')]
+	isdir=[item for item in contents if os.path.isdir(f'{path}/{item}')]
+	sprint=sys.stdout.write
+	sprint(f'\n#=>[~]\t\"\"\"\tPackage: [ \'{pkgname}\' ]\t\"\"\"')
+	sprint(f'\n{level(0)}║')
+	sprint(f'\n{level(0)}╚══[/]-<{pkgname}>')
+	sprint(f'{level(1)}')
+	print('path:',path)
+	print('listdir:', contents)
+	print('isfile: ', isfile)
+	print('isdir: ', isdir)
+
+
+
 	
 
-	# for idx,folder in enumerate(reversed(os.path.split(sys.argv[0])[0].split('/'))):
-	# 	pkg = { 'name' :folder, 'path' : '/'.join(os.path.split(sys.argv[0])[0].split('/')[:(len(os.path.split(sys.argv[0])[0].split('/'))-idx)]),}
-	# 	check =  ispkg('/'.join(os.path.split(sys.argv[0])[0].split('/')[:(len(os.path.split(sys.argv[0])[0].split('/'))-(idx+1))]))
-	#
-	# 	if not check:
-	# 		break
-	pkg = [pkg[0] for pkg in pkgs if pkg[1] == True][-1]
-	print(pkg)
+	
 
-	
-	return pkg
-		
-		# if ispkg(os.getcwd()) :
-		# 	newmaster=os.getcwd()
-		# 	testfolder= os.path.split(os.getcwd())[0]
-		# else thisfolder
-		# print('testfolder',testfolder)
-		#
-		# if not ispkg(os.chdir(os.path.split(os.getcwd)())[0])) :
-		# 	break
-	#print(os.getcwd())
-
-	
-	
 def main(pfx):
 	pass
 	
@@ -253,4 +267,4 @@ if __name__ == '__main__':
 	# pkg_tree(os.path.abspath(path),0)
 
 	# f'\n\t\--[/]-<{pkg}','>')
-	get_master()
+	build_tree()

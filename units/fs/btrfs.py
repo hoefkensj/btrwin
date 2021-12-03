@@ -5,7 +5,7 @@ from btrwin.units.conf import ctl
 from btrwin.units.fs import fsctl
 
 def get_subvs(parent):
-	return [directory for directory in fsctl.get_dirs(parent) if btrfsutil.is_subvolume(dir)]
+	return [directory for directory in fsctl.get_dirs(parent) if btrfsutil.is_subvolume(directory)]
 
 		
 def add_idfiers(subv):
