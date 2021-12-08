@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 from configparser import ConfigParser,ExtendedInterpolation
 import os
-import argparse
-
 
 def new():
 	cfg = ConfigParser(interpolation=ExtendedInterpolation(), delimiters=':')  # create empty config
@@ -92,11 +90,11 @@ def show_global_config():
 			print(f'|\t|---[{section}]')
 			for key in dict(file[section]).keys():
 				tabs= divmod(len(key),4)[0] if divmod(len(key),4)[0] > tabs else tabs
-				if divmod(len(key),2)[0] == tabs:
+				if divmod(len(key),2)[0] >= tabs:
 					print(f'|\t|\t|---> {key}',' ',f':\t{file[section][key]}')
 				elif divmod(len(key),2)[0] == tabs-1:
 					print(f'|\t|\t|---> {key}','\t',f':\t{file[section][key]}')
-				elif divmod(len(key),2)[0] == (tabs-2):
+				elif divmod(len(key),2)[0] <= (tabs-2):
 					print(f'|\t|\t|---> {key}','\t',f':\t{file[section][key]}')
 			print(f'|\t|')
 		print(f'|')

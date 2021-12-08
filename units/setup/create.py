@@ -1,20 +1,21 @@
 #!/usr/bin/env python
 
 from os import environ
-from .. import common
-from units.common import libfunc as F
-import debug as d
+from btrwin.units.common import libfunc as F
+from btrwin.units.common import skel
+from btrwin.units import conf
+import btrwin.debug as d
 
+G=btrwin.units.conf.G()
 
-def sys(path):
-
+def sys_folders(path):
 	DIRS= common.skel.sys.dirs()
 	F.create_dtree(DIRS['sys'],path)
 	d.print('dirs created')
-	common.skel.tpl.lnks(path=path)
+	skel.tpl.lnks(path)
+	
 	d.print('symlinks created')
-	#link wine to /loader
-	#populate /meta/bin
-	#
+
 	return True
+sys()
 

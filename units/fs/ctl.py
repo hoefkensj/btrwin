@@ -8,12 +8,14 @@ import subprocess_tee as sproc
 def get_dirs(parent):
 	return [os.path.join(parent, name) for name in os.listdir(parent) if os.path.isdir(os.path.join(parent, name))]
 
-def get_disks():
-	result = sproc.run('lsblk -I 259,8 --list -o FSTYPE,LABEL,PARTLABEL,NAME', tee=False)
+def get_disks(type):
+
+	result = sproc.run('lsblk -I 259,8 --list -o FSTYPE,NAME,MOUNTPOINT', tee=False)
 	resultsplit = result.stdout.strip().split('\n')
-	for line in resultsplit:
-		if 'btrfs' in line:
-			print(line)
+	mounted=[line for line in resultsplit if any('/' in i for i in line.split())]
+	vols=	[line for line in mounted if type in line ]
+	vols =[[col for col in reversed(vol.split()[1:])] for vol in vols]
+	return vols
 
 def create_dtree(dic, path):
 	for name, info in dic.items():
@@ -26,5 +28,5 @@ def create_dtree(dic, path):
 	
 	
 if __name__ == '__main__':
-	get_disks()
+	get_disks('btrfs')
 	

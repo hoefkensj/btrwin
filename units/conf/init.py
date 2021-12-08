@@ -15,7 +15,8 @@ def init():
 	file='btrwin'
 	section='PATH'
 	settings={
-		'mount':'/mnt/btrd0v1',
+		'sysconfig': '/etc/betterwin/betterwin.conf',
+		'mount':'/mnt/btrndv1',
 		'sys':'${mount}/opt/BTRWin',
 		'subv' : '${sys}/subv',
 		'loaders' : '${sys}/loaders'
