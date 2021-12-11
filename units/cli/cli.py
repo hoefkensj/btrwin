@@ -4,14 +4,14 @@ import click as C
 
 from . import fs
 from . import conf
-
+from . import setup
 @C.group()
 def entry_point():
     pass
 
 entry_point.add_command(fs.fs)
 entry_point.add_command(conf.conf)
-
+entry_point.add_command(setup.setup)
 
 
 

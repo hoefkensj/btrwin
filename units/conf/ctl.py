@@ -1,19 +1,18 @@
 #!/usr/bin/env python
 from configparser import ConfigParser,ExtendedInterpolation
 import os
+from btrwin.units.common import ls_dirs,ls_files
+
+pjoin=os.path.join
 
 def new():
 	cfg = ConfigParser(interpolation=ExtendedInterpolation(), delimiters=':')  # create empty config
 	cfg.optionxform = lambda option: option
 	return cfg
 	
-def get_dirs(parent):
-	dirs=[os.path.join(parent, name) for name in os.listdir(parent) if os.path.isdir(os.path.join(parent, name))]
-	return dirs
-
 def get_config(**k):
-	config=k['config']
-	path=k['path']
+	config=k['c']
+	path=k['p']
 	config.read(path)
 	return config
 	
@@ -22,27 +21,64 @@ def save_to_file(file,conf):
 		conf.write(file)
 	return
 	
-def construct_global_config():
-	glob={}
-	files=[]
-	path='/etc/betterwin/betterwin.conf'
-	glob['btrwin'] = get_config(path=os.path.join(path),config=new())
-	path=os.path.join(os.getenv("HOME"),'.config/btrwin.conf') #=the folder ...btrwin.conf/configs..
-	files += [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
-	cfg_files=[f for f in files if f[-5:] == '.conf']
+def get_user_config(user,cfg):
+	get_config(p=pjoin(user,f'{cfg}.conf'),c=new())
+
+def construct_global_config(path_sysconf='/etc/btrwin/btrwin.conf',path_userconfig='.config/btrwin'):
+	sys=path_sysconf
+	user=os.path.join(os.getenv("HOME"),path_userconfig) #=the folder ...btrwin.conf/configs..
+	files = ls_files(user)
+	cfg_files=[os.path.split(f)[1][:-5] for f in files if f[-5:] == '.conf']
+	glob= {'btrwin' : get_config(p=pjoin(sys),c=new())}
 	for cfg in cfg_files:
-		glob[cfg[:-5]] = get_config(path=os.path.join(path,cfg),config=new())
+		glob[cfg] = get_config(p=pjoin(user,f'{cfg}.conf'),c=new())
 	return glob
 
-def save_global_config(glob):
-	for configfile in glob.keys():
+def save_global_config(G):
+	loc_sys=G['btrwin']['PATH']['config']
+	for configfile in G.keys():
 		if configfile == 'btrwin':
-			path='/etc/betterwin/betterwin.conf'
+			path='/etc/btrwin/btrwin.conf'
 		else:
 			path=os.path.join(os.getenv("HOME"),'.config/btrwin.conf',f'{configfile}.conf')
-		config=glob[configfile]
+		config=G[configfile]
 		save_to_file(path,config)
-		
+
+def set_key(**k):
+	glob=get_global_config()
+	file = k.get('file')
+	section=k.get('section')
+	key=k.get('key')
+	val=k.get('value')
+	if file:
+		config=glob[file] if glob.get(file) else new()
+		config[section]= glob[file][section] if dict(config).get(section) else {}
+		config[section][key]=val
+		glob[file]=config
+		save_global_config(glob)
+		return glob
+
+
+	else :
+		return 1 # error = 1
+
+def set_dict(dct):
+	"""
+	loads a dictionary formatted config group into the config ,
+	the dictionary needs to meet the following specifications:
+	the first two key:val pairs are file:<filename >and section:<section-name> within the file
+	example:
+	config={file : btrwin,
+					section: PATH,
+					key1: val1}
+	:param dct: dictionary where the first two key:val pairs are file:filename and section within the file
+	:return:
+	"""
+	file = dct.pop('file')
+	section= dct.pop('section')
+	[set_key(key=key,val=dict[key],section=section,file=file) for key in dct.keys()]
+
+
 def get_global_config():
 	return construct_global_config()
 
@@ -58,7 +94,6 @@ def show_setting(**k):
 		if k.get('section'):
 			section=k['section']
 			print(f'|\t|->{section}:')
-			
 			#print(config.sections())
 			if section in config.sections():
 				#print(glob[file][section])
@@ -98,34 +133,3 @@ def show_global_config():
 					print(f'|\t|\t|---> {key}','\t',f':\t{file[section][key]}')
 			print(f'|\t|')
 		print(f'|')
-
-def set_setting(**k):
-	glob=get_global_config()
-	file = k.get('file')
-	section=k.get('section')
-	key=k.get('key')
-	val=k.get('value')
-	
-	if file:
-		config=glob[file] if glob.get(file) else new()
-		config[section]= glob[file][section] if dict(config).get(section) else {}
-		config[section][key]=val
-		glob[file]=config
-		save_global_config(glob)
-		return glob
-
-
-	else :
-		return 1 # error = 1
-
-def qset(key,value,section,file):
-	set_setting(file=file,section=section,key=key,value=value)
-
-def set_dict(dict):
-	file = dict.pop('file')
-	section= dict.pop('section')
-	for key in dict.keys():
-		qset(key,dict[key],section,file)
-
-
-

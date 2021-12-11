@@ -1,0 +1,47 @@
+<dir id="$tpl">
+	<dir id="drive_c" />
+		<dir id="programfiles" />
+		<a src='programfiles' lnk="Program Files" />
+		<dir id="programfilesx86" />
+		<a src='programfilesx86' lnk="Program Files (x86)"/>
+		<dir id="programdata" />
+			<dir id="microsoft" />
+			<dir id="windows" />
+			<dir id="users" />
+				<dir id="$USERNAME" />
+					<dir id="appdata" />
+						<dir id="roaming" />
+		<a src='programdata' lnk="ProgramData"/>
+		<dir id="start" />
+	<dir id="meta" />
+		<dir id="bin" />
+		<dir id="etc" />
+		<dir id="lib" />
+			<dir id="icons" />
+			<dir id="exe" />
+	<dir id="apps" />
+</dir>	
+
+def lnks(tpl,USERNAME):
+	os.chdir(os.path.join(tpl,'drive_c'))
+	
+	os.symlink('programfiles', 'Program Files')
+	os.symlink
+	os.symlink
+	os.symlink('users', 'Users')
+	os.chdir(os.path.join(tpl,'drive_c','programdata'))
+	os.symlink('microsoft', 'Microsoft')
+	os.chdir(os.path.join(tpl,'drive_c','programdata','microsoft'))
+	os.symlink('windows', 'Windows')
+	os.chdir(os.path.join(tpl,'drive_c','programdata','microsoft','windows'))
+	os.symlink('../../start', 'Start Menu')
+	os.chdir(os.path.join(tpl,'drive_c','users'))
+	os.symlink(USERNAME, 'steamuser')
+	os.chdir(os.path.join(tpl,'drive_c','users',USERNAME))
+	USERHOME=os.path.join('/home',USERNAME)
+	os.symlink(os.path.join(USERHOME, 'Documents'), 'Documents')
+	os.symlink(os.path.join(USERHOME, 'Downloads'), 'Downloads')
+	os.symlink(os.path.join(USERHOME, 'Music'), 'Music')
+	os.symlink(os.path.join(USERHOME, 'Pictures'), 'Pictures')
+	os.symlink(os.path.join(USERHOME, 'Videos'), 'Videos')
+	return

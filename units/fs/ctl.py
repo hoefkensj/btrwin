@@ -1,32 +1,41 @@
 #!/usr/bin/env python
-import os
 from os import makedirs
-
+from btrwin import G,S
+from btrwin.units.common import libfunc
 import subprocess_tee as sproc
+from btrwin import  debug as d
 
-
-def get_dirs(parent):
-	return [os.path.join(parent, name) for name in os.listdir(parent) if os.path.isdir(os.path.join(parent, name))]
+G=G()
 
 def get_disks(type):
-
-	result = sproc.run('lsblk -I 259,8 --list -o FSTYPE,NAME,MOUNTPOINT', tee=False)
+	split=[]
+	result = sproc.run("lsblk -I 259,8 --list -o FSTYPE,PATH,MOUNTPOINT,LABEL |awk '$1==\"btrfs\" {print $2,$4,$3}'| awk '$3 != \"\" {print $1, $3,$2 }'", tee=False)
 	resultsplit = result.stdout.strip().split('\n')
-	mounted=[line for line in resultsplit if any('/' in i for i in line.split())]
-	vols=	[line for line in mounted if type in line ]
-	vols =[[col for col in reversed(vol.split()[1:])] for vol in vols]
-	return vols
+	for line in resultsplit:
+		split+=[line.split()]
+	return split
 
-def create_dtree(dic, path):
+def create_directory_tree(dic, path):
 	for name, info in dic.items():
 		next_path = path + "/" + name
 		if isinstance(info, dict):
 			makedirs(next_path)
-			create_dtree(info, next_path)
-	return
+			create_directory_tree(info, next_path)
 
-	
-	
-if __name__ == '__main__':
-	get_disks('btrfs')
-	
+def select(idx):
+	idx= idx-1
+	disks = get_disks('btrfs')
+	G['btrwin']['PATH']['mount']=disks[idx][0]
+	S(G)
+
+
+def list():
+	disks = get_disks('btrfs')
+	selected= G['btrwin']['PATH']['mount']
+	if any([selected in disk for disk in disks]):
+		for idx,disk in enumerate(disks):
+			if disk[0]==selected:
+				disks[idx][-1]+=f'*'
+	header=['Idx','Device','mountpoint','Label']
+
+	libfunc.sprint_table(disks,1,2,rownr=True)

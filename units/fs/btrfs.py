@@ -3,11 +3,11 @@ import os,btrfsutil
 from btrwin import debug as d
 from btrwin.units.conf import ctl
 from btrwin.units.fs import fsctl
+from btrwin.units.common.libfunc import get_dirs
 
 def get_subvs(parent):
-	return [directory for directory in fsctl.get_dirs(parent) if btrfsutil.is_subvolume(directory)]
+	return [directory for directory in get_dirs(parent) if btrfsutil.is_subvolume(directory)]
 
-		
 def add_idfiers(subv):
 	ini=os.path.join(subv, 'desktop.ini')
 	dot=os.path.join(subv, '.directory')
@@ -32,7 +32,6 @@ def del_subv(parent,name):
 	subv=os.path.join(parent, name)
 	deleted=btrfsutil.delete_subvolume(subv)
 	return deleted
-
 
 def create_snapshot(parent,src,dst):
 	subv_src=os.path.join(parent, src)

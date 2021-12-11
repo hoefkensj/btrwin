@@ -1,17 +1,12 @@
 import os,sys
 
 sprint=sys.stdout.write
-def ls_dirs(path):
-	return [os.path.join(path, name) for name in os.listdir(path) if os.path.isdir(os.path.join(path, name))]
-	
-def ls_files(path):
-		return [os.path.join(path, name) for name in os.listdir(path) if os.path.isfile(os.path.join(path, name))]
 
 def ls(path,flags=''):
 	"""
 	similar to the systems 'ls -A' lists directory contents
 	:param path full system path of the dir to ls
-	:return: the contents of the dir
+	:return: the contents of the dir split in python scripts other dirs
 	"""
 	A = [name for name in os.listdir(path)]	#dont concat the path to the files for now
 	visible = [item for item in A if not item.startswith('.')]
@@ -26,9 +21,9 @@ def ispkg(dirpath):
 	"""
 	:param dirpath: path to test for it being a python package (has __init__.py)
 	:return: boolean (true for is package false if not )
-	"""
 	# True if True in [True for item in os.listdir(dirpath) if  item == "__init__.py" ] else False =>>>
 	# test = any([True for item in os.listdir(dirpath) if  item == "__init__.py" ]) =>>>
+	"""
 	return any(["__init__.py" in os.listdir(dirpath)])
 
 def get_master():

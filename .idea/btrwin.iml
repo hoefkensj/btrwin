@@ -3,14 +3,6 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/units" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/units/cli" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/units/common" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/units/conf" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/units/fs" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/units/main" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/units/prefix" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/units/setup" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/.idea" />
     </content>
     <orderEntry type="inheritedJdk" />

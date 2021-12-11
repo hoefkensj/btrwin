@@ -58,3 +58,4 @@ def lnks(tpl,USERNAME):
 	os.symlink(os.path.join(USERHOME, 'Pictures'), 'Pictures')
 	os.symlink(os.path.join(USERHOME, 'Videos'), 'Videos')
 	return
+

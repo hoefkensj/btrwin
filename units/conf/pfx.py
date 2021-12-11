@@ -1,16 +1,18 @@
 #!/usr/bin/env python
 import os
-from betterwin.confctl import confctl
+from btrwin.units import conf 
 import argparse
 
-GLOB = confctl.get_global_config()
+C=conf.get()
+
+
 
 def create_prefix_config(PREFIX,TPL='',BIT='',EXES=''):
 	bin=['wine','wine64','wineboot','winecfg','wineconsole','msiexec','notepad','regedit','regsvr32','wineserver','winepath',]
-	PFX= os.path.join(GLOB['btrwin']['PATH']['subv'],PREFIX)
+	PFX= os.path.join(C['btrwin']['PATH']['subv'],PREFIX)
 	EXES= '${path}'+f'/{EXES}'
 	LDR_BIN='${PATH:ldrbin}'
-	BIT= GLOB[TPL]['WINE_ENV']['BIT']
+	BIT= C[TPL]['WINE_ENV']['BIT']
 	
 	PATH =	{
 		'file'					:	f'{PREFIX}'	,

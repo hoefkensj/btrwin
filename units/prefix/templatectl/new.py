@@ -5,7 +5,7 @@ from subprocess import Popen, PIPE
 
 import debug as d
 from units import conf, fs, common
-from units.common import skel
+import skel
 
 #aliassing
 G=conf.G()

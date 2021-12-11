@@ -2,17 +2,18 @@
 import click as C
 from . import create as  setup_create
 
+from btrwin.units.fs import pkgtree
+
 @C.group()
 def setup():
-	"""fs help"""
+	"""setup help"""
 	pass
 
 @setup.command()
 def pkgtree():
 	"""shows the filetree of this package"""
-	btrwin.units.fs.pkgtree.build_tree()
+	pkgtree.build_tree()
 	
  
  
  
-fs.add_command(setup_create.btrfs)

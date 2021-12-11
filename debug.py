@@ -3,8 +3,11 @@ from sys import stdout
 import os
 
 def print(*a):
+	prnt=''
 	for item in a :
-		stdout.write(str(item))
+		prnt+=str(item)
+	prnt+= '\n'
+	stdout.write(prnt)
 	#stdout.write(f'\n')
 	return
 	

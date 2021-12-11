@@ -2,6 +2,7 @@
 import click as C
 import btrwin.units.fs.pkgtree
 from . import btrfs as fs_btrfs
+from btrwin.units import fs as FS
 
 @C.group()
 def fs():
@@ -12,8 +13,20 @@ def fs():
 def pkgtree():
 	"""shows the filetree of this package"""
 	btrwin.units.fs.pkgtree.build_tree()
-	
- 
+
+@fs.command()
+def list():
+	"""list availeble btrfs volumes"""
+	FS.list()
+	pass
+
+
+@fs.command()
+@C.argument('idx')
+def select(idx):
+	"""select the btrfs volume to use see ..list for index numbers  """
+	FS.select(int(idx))
+	pass
  
  
 fs.add_command(fs_btrfs.btrfs)
