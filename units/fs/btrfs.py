@@ -1,40 +1,29 @@
 #!/usr/bin/env python
-import os,btrfsutil
-from btrwin import debug as d
-from btrwin.units.conf import ctl
-from btrwin.units.fs import fsctl
-from btrwin.units.common.libfunc import get_dirs
+import btrwin.lib as lib
+import btrwin.units.conf as c
+import colorama as style
 
-def get_subvs(parent):
-	return [directory for directory in get_dirs(parent) if btrfsutil.is_subvolume(directory)]
 
-def add_idfiers(subv):
-	ini=os.path.join(subv, 'desktop.ini')
-	dot=os.path.join(subv, '.directory')
-	bang=os.path.join(subv, f'.!{subv.split("/")[-1].upper()}!.')
-	with open(ini, 'w') as file:
-		contents=f'[.ShellClassInfo]\r\nIconResource=C:\Windows\System32\SHELL32.dll,7'
-		file.write(contents)
-	with open(dot, 'w') as file:
-		contents=f'[Desktop Entry]\nIcon=drive-partition'
-		file.write(contents)
-	with open(bang, 'w') as file:
-		contents=f'# {subv.split("/")[-1].upper()}\n[Desktop Entry]\nIcon=drive-partition'
-		file.write(contents)
+G=c.get_global_config()
+
+def select_disk(idx):
+	idx= idx-1
+	disks = lib.fs.ls_disks('btrfs')
+	G['btrwin']['PATH']['mount']=disks[idx][0]
+	c.save(G)
 	
-def create_subv(parent,name):
-	subv=os.path.join(parent, name)
-	btrfsutil.create_subvolume(subv)
-	add_idfiers(subv)
-	return subv
-	
-def del_subv(parent,name):
-	subv=os.path.join(parent, name)
-	deleted=btrfsutil.delete_subvolume(subv)
-	return deleted
+def selected_disk():
+	try:	disk = G['btrwin']['PATH']['mount']
+	except KeyError: disk=None
+	return disk
 
-def create_snapshot(parent,src,dst):
-	subv_src=os.path.join(parent, src)
-	subv_dst=os.path.join(parent, dst)
-	btrfsutil.create_snapshot(subv_src,subv_dst)
-	return
+
+def mklist_btrfsdisks():
+	disks = lib.fs.ls_disks('btrfs')
+	selected= selected_disk()
+	if any([selected in disk for disk in disks]):
+		for idx,disk in enumerate(disks):
+			if disk[0]==selected:
+				disks[idx][-1]+=f'{style.Fore.GREEN} *{style.Style.RESET_ALL}'
+	header=['Idx','Device','mountpoint','Label']
+	return disks

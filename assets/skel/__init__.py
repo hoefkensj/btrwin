@@ -1,4 +1,2 @@
 #!/usr/bin/env python
-
-
-from . import bin,tpl,sys
+from . import sys,tpl

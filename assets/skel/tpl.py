@@ -1,6 +1,7 @@
 #!/usr/bin/env python
-import os
-import debug as d
+import os,sys
+sprint=sys.stdout.write
+
 def dirs(USERNAME):
 	DIRS= {
 			'tpl': {
@@ -36,26 +37,33 @@ def dirs(USERNAME):
 	return DIRS
 	
 	
-def lnks(tpl,USERNAME):
+def lnks(tpl):
+	USER=os.environ.get('USER')
 	os.chdir(os.path.join(tpl,'drive_c'))
-	os.symlink('programfiles', 'Program Files')
-	os.symlink('programfilesx86', 'Program Files (x86)')
-	os.symlink('programdata', 'ProgramData')
-	os.symlink('users', 'Users')
+	mklink('programfiles', 'Program Files')
+	mklink('programfilesx86', 'Program Files (x86)')
+	mklink('programdata', 'ProgramData')
+	mklink('users', 'Users')
 	os.chdir(os.path.join(tpl,'drive_c','programdata'))
-	os.symlink('microsoft', 'Microsoft')
+	mklink('microsoft', 'Microsoft')
 	os.chdir(os.path.join(tpl,'drive_c','programdata','microsoft'))
-	os.symlink('windows', 'Windows')
+	mklink('windows', 'Windows')
 	os.chdir(os.path.join(tpl,'drive_c','programdata','microsoft','windows'))
-	os.symlink('../../start', 'Start Menu')
+	mklink('../../start', 'Start Menu')
 	os.chdir(os.path.join(tpl,'drive_c','users'))
-	os.symlink(USERNAME, 'steamuser')
-	os.chdir(os.path.join(tpl,'drive_c','users',USERNAME))
-	USERHOME=os.path.join('/home',USERNAME)
-	os.symlink(os.path.join(USERHOME, 'Documents'), 'Documents')
-	os.symlink(os.path.join(USERHOME, 'Downloads'), 'Downloads')
-	os.symlink(os.path.join(USERHOME, 'Music'), 'Music')
-	os.symlink(os.path.join(USERHOME, 'Pictures'), 'Pictures')
-	os.symlink(os.path.join(USERHOME, 'Videos'), 'Videos')
+	mklink(USER, 'steamuser')
+	os.chdir(os.path.join(tpl,'drive_c','users',USER))
+	USERHOME=os.path.join('/home',USER)
+	mklink(os.path.join(USERHOME, 'Documents'), 'Documents')
+	mklink(os.path.join(USERHOME, 'Downloads'), 'Downloads')
+	mklink(os.path.join(USERHOME, 'Music'), 'Music')
+	mklink(os.path.join(USERHOME, 'Pictures'), 'Pictures')
+	mklink(os.path.join(USERHOME, 'Videos'), 'Videos')
 	return
 
+def mklink(src,lnk):
+		os.remove(lnk) if os.path.exists(lnk) else None
+		sprint(f'creating symlink [{src}--> {lnk} ...')
+		mklink(src,lnk)
+		sprint('Done\n')
+		

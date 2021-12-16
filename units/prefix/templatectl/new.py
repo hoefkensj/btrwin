@@ -4,6 +4,9 @@ import os
 from subprocess import Popen, PIPE
 
 import debug as d
+import lib.conf
+import lib.fs
+import units.fs.ctl
 from units import conf, fs, common
 import skel
 
@@ -39,7 +42,7 @@ def tpl_name(*a,**k):
 
 def populate_template(tpl):
 	DIRS= skel.tpl.dirs(USERNAME=os.environ['USER'])
-	common.libfunc.create_dtree(DIRS['tpl'], tpl)
+	lib.fs.mkdirtree(DIRS['tpl'], tpl)
 	d.print('dirs created')
 	skel.tpl.lnks(tpl=tpl, USERNAME=os.environ['USER'])
 	d.print('symlinks created')
@@ -123,7 +126,7 @@ def create_template(settings):
 		'WINEPREFIX' 			:	f'{TPL}',
 		'WINELOADER'			:	f'{LDR_BIN}/wine',
 		'WINESERVER'			:	f'{LDR_BIN}/wineserver'}
-	conf.ctl.set_dict(env)
+	lib.conf.set_dict(env)
 	
 	boot(wineboot=f'{LDR_BIN}/wineboot',env=env)
 	return

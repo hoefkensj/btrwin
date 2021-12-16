@@ -1,17 +1,19 @@
 #!/usr/bin/env python
-from btrwin import G
-from btrwin.assets import skel
-from btrwin.units import fs
-import btrwin.debug as d
+import btrwin.lib as lib
+import btrwin.assets.skel as skel
+import btrwin.units.conf as c
+import os
 
-G=G()	#load global config in G
+G=c.get()	#load global config in G
 
 def sys_folders(path):
-	DIRS= skel.sys.dirs()
-	F.create_dtree(DIRS['sys'],path)
-	d.print('dirs created')
-	skel.tpl.lnks(path)
-	d.print('symlinks created')
+	DIRS=skel.sys.DIRS
+	lib.fs.mkdirtree(DIRS['sys'], path)
+	
+
+def sys_links(path):
+	LINKS=skel.sys.links(path)
+	lib.fs.mklinktree(LINKS, path)
 
 
 def init_sysconf():
@@ -26,6 +28,3 @@ def init_sysconf():
 		'loaders' : '${sys}/loaders'
 	}
 	
-def seq():
-	fs.list()
-	sprint

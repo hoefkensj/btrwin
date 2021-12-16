@@ -1,14 +1,16 @@
 #!/usr/bin/env python
 import os
-import debug as d
-def dirs():
-	DIRS= {
+
+import lib.fs
+
+
+DIRS= {
 			'sys': {
 					'btrwin': {
 							'bin'    : {},
 							'apps'   : {},
 							'subv'   : {},
-							'ldrs'   : {
+							'loaders'   : {
 									'proton'   : {},
 									'wine'     : {},
 									'crossover': {}
@@ -17,23 +19,13 @@ def dirs():
 							},
 					}
 			}
-	return DIRS
+
 	
-	
-def lnks(path):
-	os.chdir(os.path.join(path,'btrwin','subv'))
-	d.print(f"in {os.path.join(path,'btrwin','subv')} :")
-	os.symlink('tpl_placeholder','tpl_default')
-	d.print(f"created symlink: tpl_placeholder ->'tpl_default'")
-	os.symlink('default', 'home-wine')
-	os.chdir(os.path.join(path,'btrwin','default'))
-	os.symlink('../subv/default', 'prefix')
-	os.symlink('../ldrs/wine/default', 'wine')
-	os.symlink('../ldrs/proton/default', 'proton')
-	os.symlink('~/.wineuser', 'user')
-	os.chdir('~/')
-	os.symlink(os.path.join(path,'default','prefix') ,'.wine')
-	os.symlink(os.path.join(path,'default','user') ,'.btrwinuser')
-	os.chdir('/opt')
-	os.symlink(os.path.join(path,'btrwin'),'btrwin')
-	return
+def links(path):
+	links={
+	os.path.join(path,'btrwin','subv') 			: [		('tpl_placeholder','tpl_default'),('default', 'home-wine')],
+	os.path.join(path,'btrwin','default')		:	[		('../subv/default', 'prefix'),('../loaders/wine/default', 'wine'),('../loaders/proton/default', 'proton'),('~/.wineuser', 'user')],
+	os.environ.get('HOME') 									:	[		(os.path.join(path,'default','prefix') ,'.wine'),(os.path.join(path,'default','user') ,'.btrwinuser')],
+	'/opt'																	:	[		(os.path.join(path,'btrwin'),'btrwin'),]
+		}
+	return links

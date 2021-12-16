@@ -25,7 +25,7 @@ def list():
 @C.argument('idx')
 def select(idx):
 	"""select the btrfs volume to use see ..list for index numbers  """
-	FS.select(int(idx))
+	FS.select_disk(int(idx))
 	pass
  
  

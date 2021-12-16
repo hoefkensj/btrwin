@@ -1,18 +1,18 @@
 #!/usr/bin/env python
 import os
-from btrwin.units import conf 
 import argparse
-
-C=conf.get()
+from btrwin import G
+import btrwin.units.conf as conf
+G=G()
 
 
 
 def create_prefix_config(PREFIX,TPL='',BIT='',EXES=''):
 	bin=['wine','wine64','wineboot','winecfg','wineconsole','msiexec','notepad','regedit','regsvr32','wineserver','winepath',]
-	PFX= os.path.join(C['btrwin']['PATH']['subv'],PREFIX)
+	PFX= os.path.join(G['btrwin']['PATH']['subv'], PREFIX)
 	EXES= '${path}'+f'/{EXES}'
 	LDR_BIN='${PATH:ldrbin}'
-	BIT= C[TPL]['WINE_ENV']['BIT']
+	BIT= G[TPL]['WINE_ENV']['BIT']
 	
 	PATH =	{
 		'file'					:	f'{PREFIX}'	,
@@ -46,9 +46,9 @@ def create_prefix_config(PREFIX,TPL='',BIT='',EXES=''):
 	
 	WINE_BIN={**WINE_BIN,**{b.upper() : f'{LDR_BIN}/{b}' for b in bin}}
  
-	confctl.set_dict(PATH)
-	confctl.set_dict(WINE_ENV)
-	confctl.set_dict(WINE_BIN)
+	conf.sdct(PATH)
+	conf.sdct(WINE_ENV)
+	conf.sdct(WINE_BIN)
 
 def getargs(): #get arguments from commandline
 	parser=argparse.ArgumentParser()

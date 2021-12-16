@@ -37,7 +37,7 @@ class confctl:
 		files=[]
 		path='/etc/betterwin/betterwin.conf'
 		glob['btrwin'] = confctl.get_config(path=os.path.join(path),config=confctl.new())
-		path=os.path.join(os.getenv("HOME"),'.config/btrwin.conf') #=the folder ...btrwin.conf/configs..
+		path=os.path.join(os.getenv("HOME"),'.config/btrwin') #=the folder ...btrwin.conf/configs..
 		files += [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
 		cfg_files=[f for f in files if f[-5:] == '.conf']
 		for cfg in cfg_files:

@@ -44,17 +44,6 @@ def get_master():
 def tabs(n):
 	return (n*'    ')
 
-def level(n):
-	#special case:
-	level0=tabs(1)
-	if n==0:
-		return f'{level0}'
-
-	lvl=f'{tabs(1)}'
-	lvls=n*lvl
-	prefix=f'{tabs(1)}{lvls}'
-	return prefix
-
 def ismodule(path):
 	if '.py' == path[:-3]:
 		pass

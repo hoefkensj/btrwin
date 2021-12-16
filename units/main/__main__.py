@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-import click as C
-from  units import cli
+from ui.cli import cli
+
 
 def main():
-	cli.cli(prog_name='Betterwin')
+	cli.cli(prog_name='Btrwin')
 	
 if __name__ == '__main__':
 	main()
