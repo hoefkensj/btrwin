@@ -3,7 +3,7 @@ import os,logging
 import subprocess_tee as sproc
 
 #logging.basicConfig(level=logging.INFO,filename='', format='%(message)s')
-logging.basicConfig(level=logging.INFO,format="%(asctime)s [%(levelname)s] %(message)s", handlers=[logging.FileHandler("created.sh"),logging.StreamHandler()])
+logging.basicConfig(level=logging.INFO,format="[%(levelname)s] %(message)s", handlers=[logging.FileHandler("created.sh"),logging.StreamHandler()])
 
 def mkdirtree(dic, path):
 	for name, info in dic.items():
@@ -19,7 +19,7 @@ def mklinktree(LINKS,path):
 		logging.info(f'cd {folder}')
 		os.chdir(folder)
 		for link in LINKS[folder]:
-			logging.info(f'ln -s {link[0]},{link[1]}')
+			logging.info(f'ln -s {link[0]} {link[1]}')
 			mklink(link[0],link[1])
 
 def mklink(src,lnk):
@@ -35,9 +35,8 @@ def mklink(src,lnk):
 		except FileNotFoundError:pass
 		try:os.rmdir(lnk)
 		except FileNotFoundError:pass
-		logging.info(f'creating symlink lnk:<{lnk}> -->  src:[{src}]...')
 		os.symlink(src,lnk)
-		logging.info('Done\n')
+
 
 
 def ls(path,flags=''):
