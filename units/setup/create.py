@@ -1,20 +1,19 @@
 #!/usr/bin/env python
 import btrwin.lib as lib
 import btrwin.assets.skel as skel
-import btrwin.units.conf as c
+import btrwin.units as unit
 import os
 
-G=c.get()	#load global config in G
+G=unit.conf.get()	#load global config in G
 
 def sys_folders(path):
-	DIRS=skel.sys.DIRS
+	DIRS=skel.skels.SKELLS['SYS']['DIRS']
 	lib.fs.mkdirtree(DIRS['sys'], path)
 	
 
-def sys_links(path):
-	LINKS=skel.sys.links(path)
-	lib.fs.mklinktree(LINKS, path)
-
+def sys_links(**k):
+	LINKS=skel.skels.SKELLS['SYS']['LINKS']
+	lib.fs.mklinktree(LINKS, **k)
 
 def init_sysconf():
 	file='btrwin'
