@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import betterwin
 
-G=betterwin.confcfg.get_global_config()
+G=betterwin.confcfg.load_global_config()
 
 def read_skell(skel):
 	with open(skel) as template:

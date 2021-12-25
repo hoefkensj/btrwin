@@ -4,7 +4,7 @@ import btrwin.assets.skel as skel
 import btrwin.units as unit
 import os
 
-G=unit.conf.get()	#load global config in G
+G=unit.conf.load()	#load global config in G
 
 def sys_folders(path):
 	DIRS=skel.skels.SKELLS['SYS']['DIRS']

@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 #sets the default prefix for ~/.winm
 import sys,os
-from units import fs
+import btrwin.units as units
 def get_pfxx()
-	subvs=fs.btrfs.get_subvs()
+	subvs=units.fs.btrfs.get_subvs()
 	pfxx=[pfx for pfx in subvs if 'tpl'  not in pfx]
 	return pfxx
 

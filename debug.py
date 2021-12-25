@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from sys import stdout
-import os
 
 def print(*a):
 	prnt=''

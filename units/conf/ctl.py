@@ -1,24 +1,35 @@
 #!/usr/bin/env python
 import os
+import sys
+import btrwin.lib 	as lib
+import btrwin.units as units
 
-import btrwin.lib.fs as lib_fs
-from btrwin.lib.conf import new, get_config, save_to_file
+def load_config(*a,**k):
+	cfg=lib.conf.get_config(p=a[0], c=k['c'])
+	return cfg
 
-pjoin=os.path.join
+def load_env_config(c):
+	dct={k:os.environ[k] for k in os.environ.keys()}
+	c.read_dict(dict(dct))
+	return {'env' : c}
 
+def load_sys_config(c):
+	c=load_config(os.path.join(lib.path.CONFIG["SYS"], f'{lib.path.NAME}.conf'), c=c)
+	return {'btrwin' : c}
 
-def get_user_config(user,cfg):
-	get_config(p=pjoin(user, f'{cfg}.conf'), c=new())
-
-def get_global_config(path_sysconf='/etc/btrwin/btrwin.conf',path_userconfig='.config/btrwin'):
-	sys=path_sysconf
-	user=os.path.join(os.getenv("HOME"),path_userconfig) #=the folder ...btrwin.conf/configs..
-	files = lib_fs.ls_files(user)
+def load_user_configs(c):
+	files = lib.fs.ls_files(lib.path.CONFIG["USER"])
 	cfg_files=[os.path.split(f)[1][:-5] for f in files if f[-5:] == '.conf']
-	glob= {'btrwin' : get_config(p=pjoin(sys), c=new())}
-	for cfg in cfg_files:
-		glob[cfg] = get_config(p=pjoin(user, f'{cfg}.conf'), c=new())
-	return glob
+	c= {cfg				: load_config(os.path.join(lib.path.CONFIG["USER"], f'{cfg}.conf'), c=c) for cfg in cfg_files}
+	return c
+
+def load_global_config():
+	btrwin 	=	load_sys_config(c=lib.conf.new())
+	#env			=	load_env_config(c=lib.conf.new())
+	user		=	load_user_configs(c=lib.conf.new())
+	cfgs= [btrwin,user]
+	G={**btrwin,**user}
+	return G
 
 def save_global_config(G):
 
@@ -26,14 +37,14 @@ def save_global_config(G):
 		if configfile == 'btrwin':
 			path='/etc/btrwin/btrwin.conf'
 		else:
-			path=os.path.join(os.getenv("HOME"),'.config/btrwin',f'{configfile}.conf')
+			path=path.join(os.getenv("HOME"), '.config/btrwin', f'{configfile}.conf')
 		config=G[configfile]
-		save_to_file(path, config)
+		lib.conf.save_to_file(path, config)
 
 def show_setting(**k):
 	# for idx,configfile in enumerate(glob.keys()):
 	# 	print(idx, '\t:\t',configfile)
-	glob= get_global_config()
+	glob= load_global_config()
 	if  k.get('file'):
 		file = k['file']
 		print(f'|->{file}/')
@@ -64,29 +75,62 @@ def show_setting(**k):
 		print(glob.keys())
 
 def show_global_config():
-	glob=get_global_config()
-	tabs=0
-	for file in glob.keys():
-		print(f'|---<{file}>')
-		file=glob[file]
-		for section in file.sections():
-			print(f'|\t|---[{section}]')
-			for key in dict(file[section]).keys():
-				tabs= divmod(len(key),4)[0] if divmod(len(key),4)[0] > tabs else tabs
-				if divmod(len(key),2)[0] >= tabs:
-					print(f'|\t|\t|---> {key}',' ',f':\t{file[section][key]}')
-				elif divmod(len(key),2)[0] == tabs-1:
-					print(f'|\t|\t|---> {key}','\t',f':\t{file[section][key]}')
-				elif divmod(len(key),2)[0] <= (tabs-2):
-					print(f'|\t|\t|---> {key}','\t',f':\t{file[section][key]}')
+	sprint=sys.stdout.write
+	G= units.conf.load()
+	def s_fx():
+		"""
+		is string_fix is string_prefix + string_suffix for config:show
+		:return: list(f,s,o) where list(x) is tuple(prefix,suffix) for f=file,s=section,o=option
+		"""
+		fx	=	(	('|---<<','>>'),
+						('|----[',']'		),
+						('|---> ',''		),)
+		return fx[0],fx[1],fx[2]
+		
+	char=0
+	sf,ss,so=s_fx()
+	for file in G.keys():
+		print(f"{sf[0]}{file}{sf[1]}")
+		config=G[file]
+		### [DEFAULT]-section HACK ###
+		# see DOC[HACKS]:configparser
+			#	if the config has a [default] section it should also have a dummy [tluafed] section if so , add it to the sections list
+			#	this is a needed hack  as config.sections() does not include the [default] section
+		sec=['DEFAULT' if s == 'DEFAULT'[::-1] else s for s in config.sections()]
+		#since [default] is first in the config lets make it appear first aswell when config:show
+		sections=[sec.pop(sec.index('DEFAULT'))]+sec if 'DEFAULT' in sec else sec
+		for section in sections:
+			print(f'|\t{ss[0]}{section}{ss[1]}')
+			sect=config[section]
+			for key in dict(sect).keys():
+				char= len(key) if len(key) > char else char
+				line=''
+				line='|\t|\t'
+				line+=f'{so[0]}{key}'
+				line+=' '*(char-len(key))
+				line+=' '*1
+				line+=':\t'
+				line+=f'{sect[key]}{so[1]}\n'
+				sprint(line)
 			print(f'|\t|')
 		print(f'|')
 
 def create_new_sysconf(fname):
-	if not '/etc/btrwin' in lib_fs.ls_dirs('/etc/'):
+	if not '/etc/btrwin' in lib.fs.ls_dirs('/etc/'):
 		os.mkdir('/etc/btrwin')
+		lib.fs.touch(f'/etc/btrwin/{fname}.conf')
 
-	lib_fs.touch(f'/etc/btrwin/{fname}.conf')
+	config = lib.conf.new()
+	config['DEFAULT'] = {}
+	config['DEFAULT'[::-1]] = {}
+	config['PATH'] = {}
+	config['DIRS'] = {}
+	default = config['DEFAULT']
+	default['NAME'] = fname
+	tluafed=config['DEFAULT']
+	tluafed['NAME']=fname
+	path=config['PATH']
+	path['sysconfig'] = f'/etc/btrwin/{fname}.conf'
 	with open(f'/etc/btrwin/{fname}.conf','w') as f:
-				f.write(f'[PATH]\nsysconfig\t:\t/etc/btrwin/{fname}.conf\n[ORG]\nNAME\t:\t{fname}')
+		config.write(f)
 

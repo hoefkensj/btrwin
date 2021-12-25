@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 import os
-
-import lib.fs
-from btrwin.units import fs
-
+import btrwin.lib as lib
+import btrwin.units as units
 
 def sysconfig_folder():
 	#check for existing folder btrwin in /etc and in ~/.config

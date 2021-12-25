@@ -1,35 +1,59 @@
 #!/usr/bin/env python
+import btrfsutil
+import os
+import btrwin.lib as lib
+ls_dirs=lib.fs.ls_dirs
 
 def create_subv(parent,name):
-	import btrfsutil
-	import os
+	"""
+	
+	:param parent:
+	:param name:
+	:return:
+	"""
 	subv=os.path.join(parent, name)
 	btrfsutil.create_subvolume(subv)
 	add_idfiers(subv)
 	return subv
 	
 def del_subv(parent,name):
-	import btrfsutil
-	import os
+	"""
+	
+	:param parent:
+	:param name:
+	:return:
+	"""
 	subv=os.path.join(parent, name)
 	deleted=btrfsutil.delete_subvolume(subv)
 	return deleted
 
 def create_snapshot(parent,src,dst):
-	import btrfsutil
-	import os
+	"""
+	
+	:param parent:
+	:param src:
+	:param dst:
+	:return:
+	"""
 	subv_src=os.path.join(parent, src)
 	subv_dst=os.path.join(parent, dst)
 	btrfsutil.create_snapshot(subv_src,subv_dst)
 	return
 
 def get_subvs(parent):
-	import btrfsutil
-	from btrwin.lib.fs import ls_dirs
+	"""
+	
+	:param parent:
+	:return:
+	"""
 	return [directory for directory in ls_dirs(parent) if btrfsutil.is_subvolume(directory)]
 
 def add_idfiers(subv):
-	import os
+	"""
+	
+	:param subv:
+	:return:
+	"""
 	ini=os.path.join(subv, 'desktop.ini')
 	dot=os.path.join(subv, '.directory')
 	bang=os.path.join(subv, f'.!{subv.split("/")[-1].upper()}!.')

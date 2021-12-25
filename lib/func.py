@@ -87,3 +87,8 @@ def sprint(*a,**k):
 	table(*a) if k['table'] else write(line)
 	
 
+def dct_lookup(**k):
+		try:
+			return k["src"][f'{k["key"]}']
+		except KeyError:
+				pass

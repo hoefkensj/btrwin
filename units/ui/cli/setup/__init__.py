@@ -2,7 +2,7 @@
 import click as C
 from . import create as  setup_create
 
-from btrwin.units.fs import pkgtree
+import btrwin.units.fs
 
 @C.group()
 def setup():
@@ -12,7 +12,7 @@ def setup():
 @setup.command()
 def pkgtree():
 	"""shows the filetree of this package"""
-	pkgtree.build_tree()
+	btrwin.units.fs.pkgtree.build_tree()
 	
  
  

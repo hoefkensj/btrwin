@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from ui.cli import cli
+from units.ui.cli import cli
 
 
 def main():

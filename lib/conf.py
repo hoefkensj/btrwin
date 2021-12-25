@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 from configparser import ConfigParser, ExtendedInterpolation
+import logging
+
 
 def new():
-	cfg = ConfigParser(interpolation=ExtendedInterpolation(), delimiters=':')  # create empty config
+	cfg = ConfigParser(interpolation=ExtendedInterpolation(), delimiters=':',allow_no_value=True)  # create empty config
 	cfg.optionxform = lambda option: option
 	return cfg
 
-def set(key,value,section,file):
-	set_key(file=file, section=section, key=key, value=value)
+# def set(key,value,section,file):
+# 	set_key(file=file, section=section, key=key, value=value)
 	
 def get_config(**k):
 	config=k['c']
@@ -15,27 +17,34 @@ def get_config(**k):
 	config.read(path)
 	return config
 
-def save_to_file(file,conf):
+def save_to_file(**k):
+	'''
+	
+	:param k: f(ile)='' c(onf)=''
+	:return:
+	'''
+	try:
+		file=k['f']
+		conf=k['c']
+	except KeyError:
+		logging.log()
+	
 	with open(file, 'w') as file:
 		conf.write(file)
 	return
 
 def set_key(**k):
-	glob=k.get('config')
+	G=k.get('config')
 	file = k.get('file')
 	section=k.get('section')
 	key=k.get('key')
 	val=k.get('val')
-	if file:
-		config=glob[file] if glob.get(file) else new()
-		config[section]= glob[file][section] if dict(config).get(section) else {}
-		config[section][key]=str(val)
-		glob[file]=config
-		return glob
+	config=G[file] if G.get(file) else new()
+	config[section]= G[file][section] if dict(config).get(section) else {}
+	config[section][key]=str(val)
+	G[file]=config
+	return G
 
-
-	else :
-		return 1 # error = 1
 
 def set_dict(dct,cfg):
 	"""
@@ -51,4 +60,8 @@ def set_dict(dct,cfg):
 	"""
 	file = dct.pop('file')
 	section= dct.pop('section')
-	[set_key(key=key,val=dct[key],section=section,file=file,config=cfg) for key in dct.keys()]
+	for key in dct.keys():
+		G=set_key(key=key,val=dct[key],section=section,file=file,config=cfg)
+	return G
+
+
