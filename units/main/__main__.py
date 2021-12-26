@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
+from . import main
 
-from units.ui.cli import cli
+main.main()
 
 
-def main():
-	cli.cli(prog_name='Btrwin')
-	
-if __name__ == '__main__':
-	main()
+

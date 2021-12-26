@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 import click as C
 
-from btrwin.units.ui.cli import conf
-from btrwin.units.ui.cli import fs
-from btrwin.units.ui.cli import setup
+from btrwin.ui.cli import setup, fs, conf
+
 
 @C.group()
 def entry_point():
@@ -13,8 +12,10 @@ entry_point.add_command(fs.fs)
 entry_point.add_command(conf.conf)
 entry_point.add_command(setup.setup)
 
+entry_point()
 
 
+# 	fs()
 # from btrwin.cli import fs as cli_fs
 # from .group2 import commands as group2
 #

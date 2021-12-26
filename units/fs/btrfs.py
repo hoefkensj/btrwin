@@ -3,18 +3,22 @@ import colorama 		as color
 import btrwin.lib 	as lib
 import btrwin.units as units
 
-G=units.conf.load()
+G=units.conf.load
 S=units.conf.save
 lib_fsbtrfs=lib.fs_btrfs
 def select_disk(idx):
+	G=units.conf.load
+	S=units.conf.save
 	idx= idx-1
 	disks = lib.fs.ls_disks('btrfs')
-	G=units.conf.load()
+	G=units.conf.load
 	G['btrwin']['PATH']['mount']=disks[idx][0]
-	G=S(G)
+	S=units.conf.save
 	
 def selected_disk():
-	G=units.conf.load()
+	G=units.conf.load
+	S=units.conf.save
+	G=G()
 	try:	disk = G['btrwin']['PATH']['mount']
 	except KeyError: disk=None
 	return disk

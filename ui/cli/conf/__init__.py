@@ -1,15 +1,21 @@
 #!/usr/bin/env python
 import click 	as C
+import btrwin.units as units
 
 from . import show 		as c_show
 from . import create 	as c_create
 from . import ctl			as c_ctl
+from . import conf		as c_conf
 
 
 @C.group()
 def conf():
 	"""conf help"""
 	pass
+
+@conf.command()
+def show():
+	units.conf.show()
  
 conf.add_command(c_show.show)
 conf.add_command(c_create.create)

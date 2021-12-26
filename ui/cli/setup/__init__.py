@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 import click as C
+import btrwin.dev as dev
 from . import create as  setup_create
 
-import btrwin.units.fs
 
 @C.group()
 def setup():
@@ -12,7 +12,7 @@ def setup():
 @setup.command()
 def pkgtree():
 	"""shows the filetree of this package"""
-	btrwin.units.fs.pkgtree.build_tree()
+	dev.tools.pkgtree.build_tree()
 	
  
  

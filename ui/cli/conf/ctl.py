@@ -12,7 +12,10 @@ def ctl():
 
 @ctl.command()
 def show():
-	"""show: prints global config to stdout """
+	"""
+	prints global config to stdout ;	alias for [conf] [show] [all]
+	:return:
+	"""
 	units.conf.show()
 	pass
 
@@ -25,8 +28,7 @@ def show():
 def set(key,val,section,config):
 	"""
 	set a key:value directly
-	:param key: keyname to set (eg mount)
-	:param val: value for that key to set
+	:param key: keyname to set (eg mount)\n:param val: value for that key to set
 	:param section: segment in the config where the key is or will be saved: for [PATH] use PATH
 	:param cfg: configfile ( the name of the config file usually the config name follews the pattern: path/to/[configname].py
 	:return:
@@ -43,14 +45,14 @@ def loadenv():
 	units.conf.ctl.load_env_config()
 
 @ctl.command()
-def loaduser()
+def loaduser():
 	units.conf.ctl.load_user_configs()
 
 @ctl.command()
-def loadsys()
+def loadsys():
 	units.conf.ctl.load_sys_config()
 
 @ctl.command()
-def newsys()
+def newsys():
 	units.conf.ctl.create_new_sysconf()
 

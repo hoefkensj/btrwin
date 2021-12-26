@@ -11,8 +11,8 @@ def btrfs():
 
 
 @btrfs.command()
-@C.argument('-p','--parent')
-@C.argument('-n','--name')
+@C.argument('--parent')
+@C.argument('--name')
 def create(parent,name):
 	"""
 	create new subvolume with [name] in [parent]
@@ -24,8 +24,8 @@ def create(parent,name):
 	pass
 	
 @btrfs.command()
-@C.argument('-p','--parent')
-@C.argument('-n','--name')
+@C.argument('--parent')
+@C.argument('--name')
 def delete(parent,name):
 	"""
 	delete btrfs subvolume
@@ -37,9 +37,9 @@ def delete(parent,name):
 	pass
 	
 @btrfs.command()
-@C.argument('-p','--parent')
-@C.argument('-s','--source')
-@C.argument('-n','--name')
+@C.argument('--parent')
+@C.argument('--source')
+@C.argument('--name')
 def snapshot(parent,source,name):
 	"""
 	duplicate btrfs subvolume"
@@ -61,7 +61,7 @@ def list():
 	pass
 
 @btrfs.command()
-@C.argument('-s','--sub','--subvolume')
+@C.argument('--subvolume')
 def ids(subvolume):
 	"""
 	create identifiers in the  btrfs subvolume

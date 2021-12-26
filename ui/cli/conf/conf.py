@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import click as C
+
 @C.command()
 def conf():
 	"""conf help"""

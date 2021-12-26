@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-import btrwin.configure as configure
+import btrwin.configure.cli
 
-main = configure.cli.prompt
+main = btrwin.configure.cli.prompt
 
 if __name__ == '__main__':
 	main()

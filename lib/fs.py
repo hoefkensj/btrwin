@@ -106,7 +106,7 @@ def ls_files(path):
 
 def ls_disks(type):
 	split=[]
-	result = sproc.run("lsblk -I 259,8 --list -o FSTYPE,PATH,MOUNTPOINT,LABEL |awk '$1==\"btrfs\" {print $2,$4,$3}'| awk '$3 != \"\" {print $1, $3,$2 }'", tee=False)
+	result = sproct.run("lsblk -I 259,8 --list -o FSTYPE,PATH,MOUNTPOINT,LABEL |awk '$1==\"btrfs\" {print $2,$4,$3}'| awk '$3 != \"\" {print $1, $3,$2 }'", tee=False)
 	resultsplit = result.stdout.strip().split('\n')
 	for line in resultsplit:
 		split+=[line.split()]

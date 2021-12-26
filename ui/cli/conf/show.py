@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import click as C
-import  btrwin.units as units
+import btrwin.units as units
 
 
 
@@ -8,6 +8,7 @@ import  btrwin.units as units
 @C.group()
 def show():
 	"""btrtfs help"""
+
 	pass
 	#################
 
@@ -20,5 +21,4 @@ def all():
 @show.command()
 def setting():
 	"""prints key-value settingspair to  stdout"""
-	units.conf.
 	pass

@@ -1,21 +1,25 @@
 #!/usr/bin/env python
 import os
 
-import lib as lib
-import units as units
-from configure.Q import hardcoded
-from configure.cli import G
+import btrwin.lib 			as lib
+import btrwin.units 		as units
+import btrwin.configure as configure
+
+
+
 
 
 def check_inst(name):
+		G=units.conf.load
+		G=G()
 		exist_cfg= True if os.path.exists('/etc/btrwin/{name}.conf') else False
 		exist_keyval= True if dict(G['btrwin']['PATH']).get('mount') else False
 		return exist_cfg and exist_keyval
 		
-		dir_sysconf= hardcoded['PATH']['dir_sysconf']
-		if not os.path.exists(dir_sysconf):
-			
-			#TODO:			#sudo create the sysconfdir Z&& sudo chmod 664 && CHOWN root:btrwin
+		# dir_sysconf= hardcoded['PATH']['dir_sysconf']
+		# if not os.path.exists(dir_sysconf):
+		# 	pass
+		# 	#TODO:			#sudo create the sysconfdir Z&& sudo chmod 664 && CHOWN root:btrwin
 
 		
 		# if not exists:

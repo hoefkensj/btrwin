@@ -5,7 +5,7 @@ import btrwin.lib 	as lib
 import btrwin.units as units
 
 
-G=units.conf.load()
+#G=units.conf.load()
 
 def create_prefix_config(PREFIX,TPL='',BIT='',EXES=''):
 	G=units.conf.load()
