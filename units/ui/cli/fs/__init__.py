@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 import click as C
-import dev.tools.pkgtree
-from . import btrfs as fs_btrfs
-from btrwin.units import fs as FS
+import btrwin.dev		as dev
+import btrwin.units as units
+
+from . import btrfs as f_btrfs
+from . import ctl 	as f_ctl
 
 @C.group()
 def fs():
@@ -17,16 +19,15 @@ def pkgtree():
 @fs.command()
 def list():
 	"""list availeble btrfs volumes"""
-	FS.list()
+	units.fs.list()
 	pass
-
 
 @fs.command()
 @C.argument('idx')
 def select(idx):
 	"""select the btrfs volume to use see ..list for index numbers  """
-	FS.select_disk(int(idx))
+	units.fs.select_disk(int(idx))
 	pass
  
  
-fs.add_command(fs_btrfs.btrfs)
+fs.add_command(f_btrfs.btrfs)

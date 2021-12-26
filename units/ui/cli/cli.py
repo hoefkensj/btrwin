@@ -1,8 +1,9 @@
 #!/usr/bin/env python
-
 import click as C
-from btrwin.units.ui.cli import setup, conf, fs
 
+from btrwin.units.ui.cli import conf
+from btrwin.units.ui.cli import fs
+from btrwin.units.ui.cli import setup
 
 @C.group()
 def entry_point():

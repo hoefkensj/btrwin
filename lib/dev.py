@@ -27,7 +27,7 @@ def pkg():
 		# True if True in [True for item in os.listdir(dirpath) if  item == "__init__.py" ] else False =>>>
 		# test = any([True for item in os.listdir(dirpath) if  item == "__init__.py" ]) =>>>
 		"""
-		return any(["__init__.py" in os.listdir(dirpath)])
+		return any(["__init__.py" in os.listdir(path)])
 	
 	def find_master():
 		"""

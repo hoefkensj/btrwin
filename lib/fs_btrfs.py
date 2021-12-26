@@ -1,12 +1,9 @@
 #!/usr/bin/env python
 import btrfsutil
 import os
-import btrwin.lib as lib
-ls_dirs=lib.fs.ls_dirs
 
 def create_subv(parent,name):
 	"""
-	
 	:param parent:
 	:param name:
 	:return:
@@ -18,7 +15,6 @@ def create_subv(parent,name):
 	
 def del_subv(parent,name):
 	"""
-	
 	:param parent:
 	:param name:
 	:return:
@@ -29,7 +25,6 @@ def del_subv(parent,name):
 
 def create_snapshot(parent,src,dst):
 	"""
-	
 	:param parent:
 	:param src:
 	:param dst:
@@ -42,15 +37,14 @@ def create_snapshot(parent,src,dst):
 
 def get_subvs(parent):
 	"""
-	
 	:param parent:
 	:return:
 	"""
-	return [directory for directory in ls_dirs(parent) if btrfsutil.is_subvolume(directory)]
+	#ls_dirs=[os.path.join(parent, name) for name in os.listdir(parent) if os.path.isdir(os.path.join(parent, name))]
+	return [directory for directory in os.listdir(parent) if btrfsutil.is_subvolume(directory)]
 
 def add_idfiers(subv):
 	"""
-	
 	:param subv:
 	:return:
 	"""

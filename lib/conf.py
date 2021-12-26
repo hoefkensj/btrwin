@@ -1,10 +1,10 @@
 #!/usr/bin/env python
-from configparser import ConfigParser, ExtendedInterpolation
+import configparser
 import logging
 
 
 def new():
-	cfg = ConfigParser(interpolation=ExtendedInterpolation(), delimiters=':',allow_no_value=True)  # create empty config
+	cfg = configparser.ConfigParser(interpolation=configparser.ExtendedInterpolation(), delimiters=':', allow_no_value=True)  # create empty config
 	cfg.optionxform = lambda option: option
 	return cfg
 
@@ -34,6 +34,14 @@ def save_to_file(**k):
 	return
 
 def set_key(**k):
+	"""
+	
+	:param k['key']:
+	:param k['val']:
+	:param k['section']:
+	:param k['file']:
+	:return: config
+	"""
 	G=k.get('config')
 	file = k.get('file')
 	section=k.get('section')

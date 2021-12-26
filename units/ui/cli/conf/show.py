@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import click as C
-from btrwin.units.conf.ctl import show_global_config
+import  btrwin.units as units
+
 
 
 
@@ -13,10 +14,11 @@ def show():
 @show.command()
 def all():
 	"""prints full config to  stdout"""
-	show_global_config()
+	units.conf.show()
 	pass
 
 @show.command()
 def setting():
 	"""prints key-value settingspair to  stdout"""
+	units.conf.
 	pass

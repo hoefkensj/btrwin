@@ -1,13 +1,11 @@
 #!/usr/bin/env python
-import btrwin.lib as lib
+import colorama 		as color
+import btrwin.lib 	as lib
 import btrwin.units as units
-import colorama as style
-
-
 
 G=units.conf.load()
 S=units.conf.save
-
+lib_fsbtrfs=lib.fs_btrfs
 def select_disk(idx):
 	idx= idx-1
 	disks = lib.fs.ls_disks('btrfs')
@@ -28,6 +26,6 @@ def mklist_btrfsdisks():
 	if any([selected in disk for disk in disks]):
 		for idx,disk in enumerate(disks):
 			if disk[0]==selected:
-				disks[idx][-1]+=f'{style.Fore.GREEN} *{style.Style.RESET_ALL}'
+				disks[idx][-1]+=f'{color.Fore.GREEN} *{color.Style.RESET_ALL}'
 	header=['Idx','Device','mountpoint','Label']
 	return disks

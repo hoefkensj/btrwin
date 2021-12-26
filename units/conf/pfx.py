@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 import os
 import argparse
+import btrwin.lib 	as lib
 import btrwin.units as units
-import btrwin.lib as lib
+
 
 G=units.conf.load()
 

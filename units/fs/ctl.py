@@ -1,15 +1,17 @@
 #!/usr/bin/env python
 import logging
-import btrwin.lib as lib
-import btrwin.units as units
-from colorama import Style,Fore
+import colorama
+
+import btrwin.lib 		as lib
+import btrwin.units 	as units
+
 
 def check_selected_disk(disks):
 	sel=units.fs.selected_disk()
 	if sel:
 		for idx,disk in enumerate(disks):
 			if disk[1]==sel:
-				disks[idx][-1]= f'{disk[-1]} {Fore.GREEN} *{Style.RESET_ALL}'
+				disks[idx][-1]= f'{disk[-1]} {colorama.Fore.GREEN} *{colorama.Style.RESET_ALL}'
 	return disks
 
 def list():

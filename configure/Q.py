@@ -1,9 +1,10 @@
+import click 						as C
 import os
-import click as C
-from colorama import Fore, Style
-from configure.cli import Q, ask, ok, cpy
-import btrwin.lib as lib
-import btrwin.units as units
+import colorama
+import btrwin.configure as configure
+import btrwin.lib 			as lib
+import btrwin.units 		as units
+
 hardcoded={'PATH':{} }
 hardcoded['PATH']['dir_sysconf']='/etc/btrwin/'
 
@@ -16,7 +17,7 @@ def Q2_default():
 	"""
 	sld=units.fs.selected_disk()
 	for idx,dsk in enumerate(lib.fs.ls_disks('btrfs')):
-		Q[2][2]	=	idx+1 if sld is not None and sld in dsk[1] else Q[2][2]
+		configure.cli.Q[2][2]	= idx + 1 if sld is not None and sld in dsk[1] else configure.cli.Q[2][2]
 
 def Q3_exec(mount,pth):
 	USERHOME	=	os.environ.get('HOME')
@@ -26,8 +27,8 @@ def Q3_exec(mount,pth):
 	units.setup.create.sys_links(USERHOME=USERHOME,USER=USER,PATH=PATH)
 
 def Q1():
-	name=ask(Q[1])
-	C.echo(f'Name: {Fore.GREEN}{name}{Style.RESET_ALL}\n')
+	name=configure.cli.ask(configure.cli.Q[1])
+	C.echo(f'Name: {colorama.Fore.GREEN}{name}{colorama.Style.RESET_ALL}\n')
 	Q1_exec(name)
 	return name
 
@@ -42,7 +43,7 @@ def Q2():
 	Q2_default()
 	disk=0
 	while disk not in range(1,len(lib.fs.ls_disks('btrfs')+1):
-		disk=ask(Q[2])
+		disk=configure.cli.ask(configure.cli.Q[2])
 		if disk == 0:
 			C.echo('Detected Btrfs Volumes (mounted):')
 			units.fs.list()
@@ -50,25 +51,25 @@ def Q2():
 	return units.fs.get_list()[disk-1][1]
 
 def Q3(mount):
-	pth = ask(Q[3])
+	pth = configure.cli.ask(configure.cli.Q[3])
 	Q3_exec(mount, pth)
 	return pth
 
 def Q4():
-	return ok(Q[4])
+	return configure.cli.ok(configure.cli.Q[4])
 
 
 def Q41(*a,**k):
 	FPATH=f'{k["PATH"]}/{k["NAME"]}/loaders/wine'
-	Q[41][2]=FPATH
-	return ask(Q[41])
+	configure.cli.Q[41][2]=FPATH
+	return configure.cli.ask(configure.cli.Q[41])
 
 
 def Q41_copy(coldir):
 	src_master=f'{os.environ.get("HOME")}/.local/share/lutris/runners/wine'
 	runners=lib.fs.ls_dirs(src_master)
 	for runner in runners:
-		cpy(runner,coldir)
+		configure.cli.cpy(runner, coldir)
 
 
 def Q41_del(coldir):

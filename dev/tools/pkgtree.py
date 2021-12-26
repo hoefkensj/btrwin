@@ -1,12 +1,13 @@
+#!/usr/bin/env python
 import os
 import sys
-import btrwin.lib 	as	 lib
+import btrwin.lib as lib
 
 pkg=lib.dev.pkg
 
 find_master		=		pkg.find_master
 is_pkg				=		pkg.is_pkg
-is_mod				=		pkg.is_mod
+is_mod				=		pkg.is_module
 
 def tabs(n):
 	return (n*'    ')
@@ -17,7 +18,7 @@ def ffix(ftype):
 	return case[ftype]
 
 def build_tree():
-	pkgpath = get_master()
+	pkgpath = find_master()
 	pkgname = os.path.split(pkgpath)[-1]
 	# contents = os.listdir(path)
 	
