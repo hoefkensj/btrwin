@@ -1,0 +1,8 @@
+LICENSE
+setup.py
+btrwin.egg-info/PKG-INFO
+btrwin.egg-info/SOURCES.txt
+btrwin.egg-info/dependency_links.txt
+btrwin.egg-info/entry_points.txt
+btrwin.egg-info/requires.txt
+btrwin.egg-info/top_level.txt

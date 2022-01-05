@@ -5,7 +5,7 @@ import shutil
 import shlex
 
 import subprocess as sproc
-import subprocess_tee as sproct
+# import subprocess_tee as sproct
 
 #logging.basicConfig(level=logging.INFO,filename='', format='%(message)s')
 logging.basicConfig(level=logging.WARNING,format="[%(levelname)s] %(message)s", handlers=[logging.FileHandler("created.sh"),logging.StreamHandler()])
@@ -102,11 +102,15 @@ def ls_files(path):
 	:param path: path to directory to list
 	:return: list of files in path
 	"""
-	return [os.path.join(path, name) for name in os.listdir(path) if os.path.isfile(os.path.join(path, name))]
+	try:
+		f=[os.path.join(path, name) for name in os.listdir(path) if os.path.isfile(os.path.join(path, name))]
+	except FileNotFoundError:
+		f=''
+	return f
 
 def ls_disks(type):
 	split=[]
-	result = sproct.run("lsblk -I 259,8 --list -o FSTYPE,PATH,MOUNTPOINT,LABEL |awk '$1==\"btrfs\" {print $2,$4,$3}'| awk '$3 != \"\" {print $1, $3,$2 }'", tee=False)
+	result = sproc.Popen("lsblk -I 259,8 --list -o FSTYPE,PATH,MOUNTPOINT,LABEL |awk '$1==\"btrfs\" {print $2,$4,$3}'| awk '$3 != \"\" {print $1, $3,$2 }'", tee=False)
 	resultsplit = result.stdout.strip().split('\n')
 	for line in resultsplit:
 		split+=[line.split()]
@@ -130,7 +134,13 @@ def ls_pyod(path, flags=''):
 def renumerate(path):
 	return sum([len(files) for r, d, files in os.walk(path)])
 
-def cp(srcdir, src, dest):
+def cp(srcdir, dest):
+	"""
+	copys files form srcdir to dest, returns stdout in pipe in realtime
+	:param srcdir:
+	:param dest:
+	:return:
+	"""
 	cp_cmd=shlex.split(f'cp -rvpf {srcdir} {dest}')
 	popen = sproc.Popen(cp_cmd, stdout=sproc.PIPE, universal_newlines=True)
 	for line in iter(popen.stdout.readline, ""):

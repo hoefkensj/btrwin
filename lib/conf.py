@@ -1,10 +1,17 @@
 #!/usr/bin/env python
+
 import configparser
 import logging
 
 
-def new():
-	cfg = configparser.ConfigParser(interpolation=configparser.ExtendedInterpolation(), delimiters=':', allow_no_value=True)  # create empty config
+def new(*a):
+	"""
+	create an empty configparser with: extended interpolation, : for delimiter and allowing empty value's for keys
+	:return: configerparser obj.
+	"""
+	cfg = configparser.ConfigParser(	interpolation		=	configparser.ExtendedInterpolation(),
+																		delimiters			=	':',
+																		allow_no_value	=	True	)  # create empty config
 	cfg.optionxform = lambda option: option
 	return cfg
 
@@ -17,20 +24,17 @@ def get_config(**k):
 	config.read(path)
 	return config
 
-def save_to_file(**k):
+def save_to_file(*a,**k):
 	'''
 	
 	:param k: f(ile)='' c(onf)=''
 	:return:
 	'''
-	try:
-		file=k['f']
-		conf=k['c']
-	except KeyError:
-		logging.log()
-	
-	with open(file, 'w') as file:
-		conf.write(file)
+	if len(a)== 2:
+		file=k.get('f') if k.get('f') is not None else a[0]
+		conf=k.get('c') if k.get('c') is not None else a[1]
+		with open(file, 'w') as file:
+			conf.write(file)
 	return
 
 def set_key(**k):

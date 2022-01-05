@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import btrfsutil
+
 import os
 
 def create_subv(parent,name):
@@ -8,9 +8,10 @@ def create_subv(parent,name):
 	:param name:
 	:return:
 	"""
+	import btrfsutil
 	subv=os.path.join(parent, name)
 	btrfsutil.create_subvolume(subv)
-	add_idfiers(subv)
+	install_btrfs_subv_meta(subv)
 	return subv
 	
 def del_subv(parent,name):
@@ -19,6 +20,7 @@ def del_subv(parent,name):
 	:param name:
 	:return:
 	"""
+	import btrfsutil
 	subv=os.path.join(parent, name)
 	deleted=btrfsutil.delete_subvolume(subv)
 	return deleted
@@ -30,6 +32,7 @@ def create_snapshot(parent,src,dst):
 	:param dst:
 	:return:
 	"""
+	import btrfsutil
 	subv_src=os.path.join(parent, src)
 	subv_dst=os.path.join(parent, dst)
 	btrfsutil.create_snapshot(subv_src,subv_dst)
@@ -40,10 +43,11 @@ def get_subvs(parent):
 	:param parent:
 	:return:
 	"""
+	import btrfsutil
 	#ls_dirs=[os.path.join(parent, name) for name in os.listdir(parent) if os.path.isdir(os.path.join(parent, name))]
 	return [directory for directory in os.listdir(parent) if btrfsutil.is_subvolume(directory)]
 
-def add_idfiers(subv):
+def install_btrfs_subv_meta(subv):
 	"""
 	:param subv:
 	:return:

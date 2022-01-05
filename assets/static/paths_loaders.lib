@@ -1,0 +1,18 @@
+[DEFAULT]
+MASTER						:		{BTRWIN}/loaders/
+LUTRIS						:		{USERHOME}/.locale/share/lutris/
+HEROIC						:		{USERHOME}/.config/heroic/
+
+[WINE]
+lutris						:		{LUTRIS}/.local/share/lutris/runners/wine
+heroic						:		{HEROIC}/tools/wine
+cxoffice					:		{USERHOME}/cxoffice/
+
+[PROTON]
+heroic						:		{USERHOME}/.config/heroic/tools/proton
+
+[DXVK]
+heroic						:		{USERHOME}/.config/heroic/tools/DXVK
+mono
+gecko
+winetricks_installers=

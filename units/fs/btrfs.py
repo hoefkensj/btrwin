@@ -11,7 +11,7 @@ def select_disk(idx):
 	S=units.conf.save
 	idx= idx-1
 	disks = lib.fs.ls_disks('btrfs')
-	G=units.conf.load
+	G=G()
 	G['btrwin']['PATH']['mount']=disks[idx][0]
 	S=units.conf.save
 	

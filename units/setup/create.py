@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 import os
-import btrwin.lib 		as lib
-import btrwin.units 	as unit
-import btrwin.assets 	as assets
+import btrwin.lib as lib
+import btrwin.units as units
+import btrwin.assets as assets
 
-G=unit.conf.load()	#load global config in G
+G=units.conf.load	#load global config in G
 skels= assets.skel.skels
 
 def sys_folders(path):

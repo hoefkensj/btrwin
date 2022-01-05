@@ -1,12 +1,7 @@
 #!/usr/bin/env python
 import os
 
-import btrwin.lib 			as lib
 import btrwin.units 		as units
-import btrwin.configure as configure
-
-
-
 
 
 def check_inst(name):

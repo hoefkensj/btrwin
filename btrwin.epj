@@ -1,0 +1,218 @@
+{
+  "header": {
+    "comment": "eric project file for project btrwin",
+    "copyright": "Copyright (C) 2021 Hoefkens Jeroen, hoefkens.j@gmail.com",
+    "saved": "2021-12-30, 04:02:44"
+  },
+  "project": {
+    "AUTHOR": "Hoefkens Jeroen",
+    "CHECKERSPARMS": {},
+    "DESCRIPTION": "btrfs wine",
+    "DOCSTRING": "",
+    "DOCUMENTATIONPARMS": {},
+    "EMAIL": "hoefkens.j@gmail.com",
+    "EOL": 0,
+    "FILETYPES": {
+      "*.e4p": "OTHERS",
+      "*.epj": "OTHERS",
+      "*.idl": "INTERFACES",
+      "*.md": "OTHERS",
+      "*.proto": "PROTOCOLS",
+      "*.py": "SOURCES",
+      "*.py3": "SOURCES",
+      "*.pyw": "SOURCES",
+      "*.pyw3": "SOURCES",
+      "*.qm": "TRANSLATIONS",
+      "*.rst": "OTHERS",
+      "*.ts": "TRANSLATIONS",
+      "*.txt": "OTHERS",
+      "*.ui": "FORMS",
+      "GNUmakefile": "OTHERS",
+      "Makefile": "OTHERS",
+      "README": "OTHERS",
+      "README.*": "OTHERS",
+      "makefile": "OTHERS"
+    },
+    "FORMS": [],
+    "HASH": "821436b4755e6dba1583356825b9000724b25fd8",
+    "IDLPARAMS": {
+      "DefinedNames": [],
+      "IncludeDirs": [],
+      "UndefinedNames": []
+    },
+    "INTERFACES": [],
+    "LEXERASSOCS": {},
+    "MAINSCRIPT": "__main__.py",
+    "MAKEPARAMS": {
+      "MakeEnabled": true,
+      "MakeExecutable": "",
+      "MakeFile": "",
+      "MakeParameters": "",
+      "MakeTarget": "",
+      "MakeTestOnly": true
+    },
+    "MIXEDLANGUAGE": false,
+    "OTHERS": [
+      "makefile"
+    ],
+    "OTHERTOOLSPARMS": {},
+    "PACKAGERSPARMS": {},
+    "PROGLANGUAGE": "Python3",
+    "PROJECTTYPE": "PyQt6",
+    "PROJECTTYPESPECIFICDATA": {},
+    "PROTOCOLS": [],
+    "RCCPARAMS": {
+      "CompressLevel": 0,
+      "CompressionDisable": false,
+      "CompressionThreshold": 70,
+      "PathPrefix": ""
+    },
+    "RESOURCES": [],
+    "SOURCES": [
+      "__main__.py",
+      "debug.py",
+      "__init__.py",
+      "setup.py",
+      "units/__init__.py",
+      "units/prefix/__init__.py",
+      "units/prefix/scan.py",
+      "units/prefix/new.py",
+      "units/prefix/__main__.py",
+      "units/prefix/default.py",
+      "units/prefix/list.py",
+      "units/prefix/metactl/__init__.py",
+      "units/prefix/metactl/bin/__init__.py",
+      "units/prefix/metactl/bin/__main__.py",
+      "units/prefix/metactl/bin/bin.py",
+      "units/prefix/metactl/exec/MSOffice2010_OUTLOOK.py",
+      "units/prefix/metactl/exec/MSOffice2010_WINWORD.py",
+      "units/prefix/metactl/exec/MSOffice2010_EXCEL.py",
+      "units/prefix/metactl/exec/Ableton_Live11.py",
+      "units/prefix/metactl/exec/MSOffice2019_Winetricks.py",
+      "units/prefix/metactl/exec/MSOffice2010-Word.py",
+      "units/prefix/metactl/exec/AbletonLive10Suite_installer.py",
+      "units/prefix/metactl/exec/__init__.py",
+      "units/prefix/metactl/exec/FooDaw2000.py",
+      "units/prefix/loader/__init__.py",
+      "units/prefix/loader/__main__.py",
+      "units/prefix/loader/ldrctl.py",
+      "units/prefix/loader/create.py",
+      "units/prefix/loader/compile.py",
+      "units/prefix/templatectl/new.py",
+      "units/prefix/templatectl/__init__.py",
+      "units/prefix/templatectl/bin/__init__.py",
+      "units/prefix/templatectl/new_subvol.py",
+      "units/prefix/templatectl/tplctl.py",
+      "units/conf/__init__.py",
+      "units/conf/pfx.py",
+      "units/conf/ctl.py",
+      "units/setup/__init__.py",
+      "units/setup/create.py",
+      "units/setup/state.py",
+      "units/setup/detect_install.py",
+      "units/setup/runner.py",
+      "units/fs/__init__.py",
+      "units/fs/btrfs.py",
+      "units/fs/fail.py",
+      "units/fs/ctl.py",
+      "units/main/__init__.py",
+      "units/main/__main__.py",
+      "units/main/main.py",
+      "units/log/__init__.py",
+      "units/log/ctl.py",
+      "units/dev/__init__.py",
+      "units/dev/tools/__init__.py",
+      "units/dev/tools/pkgtree.py",
+      "units/dev/tools/import_ctl.py",
+      "units/configure/__init__.py",
+      "units/configure/cli.py",
+      "units/configure/tst.py",
+      "units/configure/__main__.py",
+      "units/configure/Q.py",
+      "units/configure/ctl.py",
+      "units/configure/scheme.py",
+      "units/ui/cli/conf/__init__.py",
+      "units/ui/cli/conf/conf.py",
+      "units/ui/cli/conf/ctl.py",
+      "units/ui/cli/conf/show.py",
+      "units/ui/cli/conf/create.py",
+      "units/ui/cli/__init__.py",
+      "units/ui/cli/fs/__init__.py",
+      "units/ui/cli/fs/btrfs.py",
+      "units/ui/cli/fs/ctl.py",
+      "units/ui/cli/setup/__init__.py",
+      "units/ui/cli/setup/create.py",
+      "units/ui/cli/cli.py",
+      "units/ui/__init__.py",
+      "assets/__init__.py",
+      "assets/skel/__init__.py",
+      "assets/skel/skels.py",
+      "assets/locale/__init__.py",
+      "assets/locale/enUS_configure_cli.py",
+      "assets/static/conf.py",
+      "lib/__init__.py",
+      "lib/conf.py",
+      "lib/fs.py",
+      "lib/fs_btrfs.py",
+      "lib/func.py",
+      "lib/path.py",
+      "lib/dev.py",
+      "lib/click.py",
+      ".old/bin.py",
+      ".old/exec.py"
+    ],
+    "SPELLEXCLUDES": "",
+    "SPELLLANGUAGE": "en_US",
+    "SPELLWORDS": "",
+    "TRANSLATIONEXCEPTIONS": [],
+    "TRANSLATIONPATTERN": "",
+    "TRANSLATIONS": [],
+    "TRANSLATIONSBINPATH": "",
+    "UICPARAMS": {
+      "Package": "",
+      "PackagesRoot": "",
+      "RcSuffix": ""
+    },
+    "VCS": "Git",
+    "VCSOPTIONS": {
+      "add": [
+        ""
+      ],
+      "checkout": [
+        ""
+      ],
+      "commit": [
+        ""
+      ],
+      "diff": [
+        ""
+      ],
+      "export": [
+        ""
+      ],
+      "global": [
+        ""
+      ],
+      "history": [
+        ""
+      ],
+      "log": [
+        ""
+      ],
+      "remove": [
+        ""
+      ],
+      "status": [
+        ""
+      ],
+      "tag": [
+        ""
+      ],
+      "update": [
+        ""
+      ]
+    },
+    "VCSOTHERDATA": {},
+    "VERSION": "0.1"
+  }
+}

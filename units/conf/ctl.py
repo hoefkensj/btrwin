@@ -1,8 +1,13 @@
 #!/usr/bin/env python
 import os
 import sys
-import btrwin.lib 	as lib
+import functools
+import time
+
+import btrwin.lib as lib
 import btrwin.units as units
+
+partial=functools.partial
 
 def load_config(*a,**k):
 	cfg=lib.conf.get_config(p=a[0], c=k['c'])
@@ -27,7 +32,7 @@ def load_global_config():
 	btrwin 	=	load_sys_config(c=lib.conf.new())
 	#env			=	load_env_config(c=lib.conf.new())
 	user		=	load_user_configs(c=lib.conf.new())
-	cfgs= [btrwin,user]
+	#cfgs= [btrwin,user]
 	G={**btrwin,**user}
 	return G
 
@@ -37,7 +42,7 @@ def save_global_config(G):
 		if configfile == 'btrwin':
 			path='/etc/btrwin/btrwin.conf'
 		else:
-			path=path.join(os.getenv("HOME"), '.config/btrwin', f'{configfile}.conf')
+			path=os.path.join(os.getenv("HOME"), '.config/btrwin', f'{configfile}.conf')
 		config=G[configfile]
 		lib.conf.save_to_file(path, config)
 
@@ -96,7 +101,13 @@ def show_global_config():
 		# see DOC[HACKS]:configparser
 			#	if the config has a [default] section it should also have a dummy [tluafed] section if so , add it to the sections list
 			#	this is a needed hack  as config.sections() does not include the [default] section
-		sec=['DEFAULT' if s == 'DEFAULT'[::-1] else s for s in config.sections()]
+		sec=[]
+		try:
+			if config['DEFAULT']:
+				sec= ['DEFAULT',]
+		except KeyError:
+			pass
+		sec+=[ s for s in config.sections()]
 		#since [default] is first in the config lets make it appear first aswell when config:show
 		sections=[sec.pop(sec.index('DEFAULT'))]+sec if 'DEFAULT' in sec else sec
 		for section in sections:
@@ -125,8 +136,9 @@ def create_new_sysconf(fname):
 	config['DEFAULT'[::-1]] = {}
 	config['PATH'] = {}
 	config['DIRS'] = {}
-	default = config['DEFAULT']
-	default['NAME'] = fname
+	config['CONFIG']['name'] = fname
+	config['CONFIG']['file'] = f'{fname}.conf'
+	config['CONFIG']['created']= lib.func.NOW.stamp
 	tluafed=config['DEFAULT']
 	tluafed['NAME']=fname
 	path=config['PATH']
@@ -134,3 +146,6 @@ def create_new_sysconf(fname):
 	with open(f'/etc/btrwin/{fname}.conf','w') as f:
 		config.write(f)
 
+load_sys_config		= functools.partial(load_sys_config, c=lib.conf.new())
+load_user_configs	= functools.partial(load_user_configs, c=lib.conf.new())
+load_env_config		= functools.partial(load_env_config, c=lib.conf.new())

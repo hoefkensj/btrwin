@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-from btrwin.units.main import __main__
-from btrwin.ui.cli.cli import entry_point
+import btrwin.units.ui.cli.cli as cli
 
-entry_point()
+
+
+cli.entry_point()

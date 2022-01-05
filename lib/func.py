@@ -1,6 +1,9 @@
 #!/usr/bin/env python
-
+import time
+import datetime
+import time
 import sys
+import types
 
 def sprint(*a,**k):
 	"""
@@ -92,3 +95,40 @@ def dct_lookup(**k):
 			return k["src"][f'{k["key"]}']
 		except KeyError:
 				pass
+
+
+def now():
+	NOW = types.SimpleNamespace()
+	def tme():
+		time = str(datetime.datetime.now()).split()[1].split('.')
+		sec=time[0]
+		micro =time[1]
+		time=[time,sec,micro]
+		return time
+	def dte():
+		date = str(datetime.datetime.now()).split()[0]
+		return date
+	def stmp_bin():
+		digits=[]
+		nible=''
+		stamp=str(bin((int(time.time()*10**6))))[2:]
+		for idx,digit in enumerate(stamp):
+			nible=nible+digit
+			if divmod(idx+1,4)[1] == 0:
+				digits += [nible]
+				nible=''
+		stamp='_'.join(digits)
+		return stamp
+	def stmp():
+		time=tme()
+		times=time[1].split(':')
+		timem=time[2]
+		date=dte().split('-')
+		stamp=''.join(date+times)+ '.'+ timem
+		return stamp
+	NOW.time=tme()
+	NOW.date=dte()
+	NOW.stamp=stmp()
+	return NOW
+NOW=now()
+
