@@ -8,7 +8,7 @@ import colorama as col
 import btrwin.assets as assets
 import btrwin.lib as lib
 import btrwin.units as units
-
+import btrwin.tools as tools
 Q = types.SimpleNamespace()
 
 cp = lib.fs.cp
@@ -44,22 +44,22 @@ def Q0201_set_default_disk():
 	return units.fs.get_list()[disk - 1][1]
 
 
-def cpy(srcdir, dest) -> None:
-	"""
-	copy progress
-	"""
-	i = 0
-	cur = 0
-	cpt = sum([len(files) for r, d, files in os.walk(srcdir)])
-	pct = (cpt / 100)
-
-	with C.progressbar(label=f"Copying {os.path.split(srcdir)[1]}", length=cpt, show_eta=False) as bar:
-		for path in cp(srcdir, dest):
-			cur = cur + 1 if i == pct else cur
-			i = +1
-			bar.update(cur)
-			time.sleep(0.0005)
-			pass
+# def cpy(srcdir, dest) -> None:
+# 	"""
+# 	copy progress
+# 	"""
+# 	i = 0
+# 	cur = 0
+# 	cpt = sum([len(files) for r, d, files in os.walk(srcdir)])
+# 	pct = (cpt / 100)
+#
+# 	with C.progressbar(label=f"Copying {os.path.split(srcdir)[1]}", length=cpt, show_eta=False) as bar:
+# 		for path in cp(srcdir, dest):
+# 			cur = cur + 1 if i == pct else cur
+# 			i = +1
+# 			bar.update(cur)
+# 			time.sleep(0.0005)
+# 			pass
 
 
 def save(section):
@@ -89,12 +89,7 @@ def ok(Q):
 	return C.confirm(text=Q[0], default=Q[1])
 
 
-def q1():
-	sys_conf = units.conf.load_sys
-	name = ask(Q.scheme[.01_01])
-	units.configure.ctl.create_name(name)
-	C.echo(f'Name: {col.Fore.GREEN}{name}{col.Style.RESET_ALL}\n')
-	return name
+
 	
 	
 def q2():
@@ -109,37 +104,11 @@ def q2():
 	# get the currently selected disk from config if there is one
 	# and adjust the default answer for the Q
 	# and check number of valid answers for Q
-	def q2_pre():
-		valid = 0
-		sld = units.fs.selected_disk()
-		for idx, dsk in enumerate(lib.fs.ls_disks('btrfs')):
-			if sld is not None and sld in dsk[1]:
-				idxsld = idx + 1
-				Q.scheme[.02_01][2] = idxsld
-			valid = idx + 1
-		return valid
 
-	valid = q2_pre()
-	disk = 0
-	while disk not in range(1, valid + 1):
-		disk = qint(Q.scheme[.02_01])
-		if disk == 0:
-			C.echo('Detected Btrfs Volumes (mounted):')
-			units.fs.list()
-	units.fs.select_disk(disk)
-	return units.fs.get_list()[disk - 1][1]
 
 
 def q3(mount):
-	def q3_post(mount, pth):
-		USERHOME = os.environ.get('HOME')
-		USER = os.environ.get('USER')
-		PATH = os.path.join(mount, pth)
-		units.setup.create.sys_folders(PATH)
-		units.setup.create.sys_links(USERHOME=USERHOME, USER=USER, PATH=PATH)
 
-	pth = ask(Q.scheme[.03_01])
-	q3_post(mount, pth)
 	return pth
 
 def q4(pth, name):
@@ -151,36 +120,38 @@ def q4(pth, name):
 		Q.scheme[.04_01][2] = FPATH
 		return ask(Q.scheme[.04_01])
 
-	def s1_copy(coldir):
-		src_master = f'{os.environ.get("HOME")}/.local/share/lutris/runners/wine'
-		runners = lib.fs.ls_dirs(src_master)
-		for runner in runners:
-			units.configure.cli.cpy(runner, coldir)
-
-	def s1_dell(coldir):
-		src_master = f'{os.environ.get("HOME")}/.local/share/lutris/runners/wine'
-		runners = lib.fs.ls_dirs(src_master)
-		for runner in runners:
-			lib.fs.rmr(runner)
-			lib.fs.rmr(os.path.split(runner)[0])
-
 	if s0():
 		known_wine = units.setup.runner_paths.wine_locs
 		wloc = [known_wine[key].format(USERHOME=os.environ.get('HOME')) for key in known_wine]
 		wldrs = [lib.fs.ls_dirs(d) for d in wloc if os.path.exists(d)]
 		wine_ldrs = s1(PATH=pth, NAME=name)
 		if wldrs:
-			s1_copy(wine_ldrs)
-			s1_dell(wine_ldrs)
-			s1_lns('{parents}')
+			portal()
 	return
 
 @C.command()
 def prompt() -> None:
 	# SEQ PART1 ########
-	name = q1()
-	mount = q2()
-	pth = q3(mount)
+	name = ask(Q.scheme[.01_01])
+	units.configure.ctl.create_name(name)
+	sys_conf = units.conf.load_sys()
+	sys_conf['btrwin']['DEFAULT']['NAME']=name
+	C.echo(f'Name: {col.Fore.GREEN}{name}{col.Style.RESET_ALL}\n')
+
+	Q.scheme[.02_01][2] = units.configure.ctl.default_disk()
+	valid = units.configure.ctl.detect_disk()
+	disk = 0
+	while disk not in range(1, valid + 1):
+		disk = qint(Q.scheme[.02_01])
+		if disk == 0:
+			C.echo('Detected Btrfs Volumes (mounted):')
+			units.fs.list()
+	units.fs.select_disk(disk)
+	mount=units.fs.get_list()[disk - 1][1]
+	
+	pth = ask(Q.scheme[.03_01])
+	units.configure.ctl.setup_sys(mount,pth)
+	
 	G = s_all(name, mount, pth)
 	# SEQ PART2 ########
 	tmp = q4(pth=pth, name=name)

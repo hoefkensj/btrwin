@@ -8,6 +8,8 @@ import colorama as col
 import btrwin.assets as assets
 import btrwin.lib as lib
 import btrwin.units as units
+import btrwin.tools.portal.portal
+portal= btrwin.tools.portal.portal.portal
 
 def create_name(name):
 	sys_conf = units.conf.load_sys
@@ -25,16 +27,13 @@ def create_name(name):
 	return name
 
 def select_disk(id):
-	valid,idxsld = detect_disk()
-
-	disk = 0
-	while disk not in range(1, valid + 1):
-		disk = id
-		if disk == 0:
-			C.echo('Detected Btrfs Volumes (mounted):')
-			units.fs.list()
-	units.fs.select_disk(disk)
-	return units.fs.get_list()[disk - 1][1]
+	valid = detect_disk()
+	if id  in range(1, valid + 1):
+		units.fs.select_disk(id)
+		done=True
+	else:
+		done=False
+	return done
 
 def detect_disk():
 		valid = 0
@@ -45,3 +44,16 @@ def detect_disk():
 def default_disk():
 	return [idx + 1 for idx, dsk in enumerate(lib.fs.ls_disks('btrfs'))	if units.fs.selected_disk() in dsk[1]]
 	
+def setup_sys(mount, pth):
+	USERHOME = os.environ.get('HOME')
+	USER = os.environ.get('USER')
+	PATH = os.path.join(mount, pth)
+	units.setup.create.sys_folders(PATH)
+	units.setup.create.sys_links(USERHOME=USERHOME, USER=USER, PATH=PATH)
+	
+def collect_runners():
+	FPATH = f'{k["PATH"]}/{k["NAME"]}/loaders/wine'
+	src_master = f'{os.environ.get("HOME")}/.local/share/lutris/runners/wine'
+	runners = lib.fs.ls_dirs(src_master)
+	for runner in runners:
+		portal(runner, coldir,'link',force=True,rel=False)

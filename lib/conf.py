@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+import os
 import configparser
 import logging
 
@@ -21,7 +21,8 @@ def new(*a):
 def get_config(**k):
 	config=k['c']
 	path=k['p']
-	config.read(path)
+	if os.path.exists(path):
+		config.read(path)
 	return config
 
 def save_to_file(*a,**k):
