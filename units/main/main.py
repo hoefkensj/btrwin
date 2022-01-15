@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import units.ui.cli.cli as cli
+import btrwin.units.ui.cli.cli as cli
 entrypoint= cli.entry_point
 
 def main():

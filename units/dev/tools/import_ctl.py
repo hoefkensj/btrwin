@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 import os
+
+import btrwin.lib
 import colorama
-import btrwin.lib.dev as dev
+import btrwin
 
 Fore				=			colorama.Fore
 Style				=			colorama.Style
@@ -11,7 +13,7 @@ pkg					=			dev.pkg
 
 
 def lsR(cd,pyscrs_all):
-	dirs_nodots=[d for d in lib.fs.ls_dirs(cd) if not os.path.split(d)[1].startswith('.')]
+	dirs_nodots=[d for d in btrwin.lib.fs.ls_dirs(cd) if not os.path.split(d)[1].startswith('.')]
 	dirs_nodots_nopycache=[d for d in dirs_nodots if not os.path.split(d)[1]=='__pycache__']
 	pyscrs_all+= [os.path.join(cd, file) for file in lib.fs.ls_files(cd) if pkg.is_module(file) or 'py' in file]
 	

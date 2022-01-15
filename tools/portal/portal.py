@@ -56,7 +56,7 @@ def cpy(srcdir, dest,force=False) -> None:
 	end_timer=timer()
 	sprint(f"{ANSI['SOPL']}{ANSI['CLL']}")
 	print(f'Copying: Done (Copied {cur[-1]} files of {sum(total)} in {end_timer-start_timer}s)')
-	
+
 def rmr(path) -> None:
 	shutil.rmtree(path)
 
@@ -86,7 +86,7 @@ def end(reason):
 	print(reason)
 	exit()
 
-def portal(src, dst, method, force, rel) -> None
+def portal(src, dst, method, force, rel) -> None:
 	ar_dst=os.path.abspath(os.path.realpath(dst)) #a(bsolute)r(eal)_dst
 	if os.path.islink(src):
 		end(reason=f'ERROR: source ({src}) is a link')
@@ -101,16 +101,3 @@ def portal(src, dst, method, force, rel) -> None
 	copy(src,dst)
 	rmr(src)
 	method(dst,src,rel)
-
-
-
-
-
-
-
-
-
-
-
-
-

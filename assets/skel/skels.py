@@ -68,6 +68,3 @@ SKELLS= {
 																																						'{USERHOME}/Music'								:			'Music'              		 	,
 																																						'{USERHOME}/Pictures'							:			'Pictures'           		 	,
 																																						'{USERHOME}/Videos'								:			'Videos'             		 	,},},},}
-    							
-                	
-                	

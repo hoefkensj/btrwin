@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import click as C
 
-from units.ui.cli import setup, fs, conf
+from btrwin.units.ui.cli import setup, fs, conf
 
 
 @C.group()
