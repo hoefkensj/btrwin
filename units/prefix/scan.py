@@ -3,10 +3,8 @@ import os,pickle,multiprocessing,subprocess
 from os import path as op
 from .. import conf
 G=conf.G()
-
 BTW=G['btrwin']
 SVL=BTW['PATH']['subv']
-
 
 def walk(start, ext ,data):
 	match={}
@@ -20,9 +18,9 @@ def walk(start, ext ,data):
 			data=match
 	for key in data.keys():
 		print(key,data[key])
-	
-	#pickle.dump( data, open("./save.p", "wb" ) )
 
+	#pickle.dump( data, open("./save.p", "wb" ) )
+	
 def step(PFX):
 	global G
 	lib={}
@@ -47,19 +45,13 @@ def step(PFX):
 							lib[f]= entry
 	for exe in lib:
 		print(lib[exe])
-	
-				
-	
 
 def scan(PFX):
 	proc = multiprocessing.Process(
 				target=step,
 				args=(PFX))
 	proc.start(), proc.join()
-	
 
-	
-	
 def main(pfx):
 	scan(pfx)
 

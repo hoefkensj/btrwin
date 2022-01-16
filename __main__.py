@@ -7,20 +7,16 @@ from btrwin import btrwin as main
 
 
 def Linux():
-		main.cli()
+	main.cli()
 def Windows():
 	print('Sorry the Windows Part of this software is still under development and hasnt been implemented yet in this version of the software...\n exiting...')
 	exit()
 def select_platform(this_platform=None):
+	platform_systems = {}
+	platform_systems['Linux']		= Linux,
+	platform_systems['Windows']	=	Windows,
+	return platform_systems[platform.system()] if platform.platform else None
 	
-	platform_systems={
-		'Linux' : Linux,
-		'Windows': Windows,
-	}
-	if platform.platform:
-		this_platform=platform_systems[platform.system()]
-	return this_platform
-
 if __name__ == '__main__':
 	this_platform =	select_platform()
 	if any([True for flag  in sys.argv if flag == '--debug']) or any([True for flag  in sys.argv if flag == '-D']):

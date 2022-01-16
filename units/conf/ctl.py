@@ -7,8 +7,6 @@ import time
 import btrwin.lib as lib
 import btrwin.units as units
 
-partial=functools.partial
-
 def load_config(*a,**k):
 	cfg=lib.conf.get_config(p=a[0], c=k['c'])
 	return cfg
