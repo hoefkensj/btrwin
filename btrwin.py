@@ -1,4 +1,4 @@
-import btrwin.units.main.main as main
+import units.main.main as main
 
 main.main()
 
