@@ -5,7 +5,7 @@ import btrwin.units as units
 
 G=units.conf.load
 S=units.conf.save
-lib_fsbtrfs=lib.fs_btrfs
+lib_fsbtrfs= libH4K.lib.fs.fs_btrfs
 def select_disk(idx):
 	G=units.conf.load
 	S=units.conf.save

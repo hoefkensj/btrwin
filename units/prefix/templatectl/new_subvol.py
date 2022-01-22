@@ -1,10 +1,8 @@
 #!/usr/bin/env python
-import btrwin.units as units
-import btrwin.lib as lib
 import debug as d
 import os
 
-fs=lib.fs_btrfs
+fs= libH4K.lib.fs.fs_btrfs
 def new_subvol():
 
 	before		= fs.get_subvs(dir_subv)

@@ -10,6 +10,7 @@ cxoffice					:		{USERHOME}/cxoffice/
 
 [PROTON]
 heroic						:		{USERHOME}/.config/heroic/tools/proton
+steam						:		{USERHOME}/.local/share/Steam/compatibilitytools.d/
 
 [DXVK]
 heroic						:		{USERHOME}/.config/heroic/tools/DXVK
