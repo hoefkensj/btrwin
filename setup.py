@@ -10,6 +10,6 @@ setup(
     ],
     entry_points='''
         [console_scripts]
-        myhello=hello:cli
+        myhello=hello:click
     ''',
 )

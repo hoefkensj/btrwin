@@ -3,12 +3,13 @@ import os
 import logging
 import shutil
 import shlex
-
-import subprocess as sproc
-# import subprocess_tee as sproct
+import re
+import subprocess
+import subprocess_tee
+# import subprocess_tee as subprocesst
 
 #logging.basicConfig(level=logging.INFO,filename='', format='%(message)s')
-logging.basicConfig(level=logging.WARNING,format="[%(levelname)s] %(message)s", handlers=[logging.FileHandler("created.sh"),logging.StreamHandler()])
+# logging.basicConfig(level=logging.WARNING,format="[%(levelname)s] %(message)s", handlers=[logging.FileHandler("created.sh"),logging.StreamHandler()])
 
 def mkdirtree(dic, path):
 	"""
@@ -55,6 +56,7 @@ def touch(fname, mode=0o666, dir_fd=None, **k):
 	with os.fdopen(os.open(fname, flags=flags, mode=mode, dir_fd=dir_fd)) as f:
 		os.utime(f.fileno() if os.utime in os.supports_fd else fname,
 		dir_fd=None if os.supports_fd else dir_fd, **k)
+	return os.path.abspath(fname)
 
 def rmr(path):
 	shutil.rmtree(path)
@@ -72,9 +74,9 @@ def ls(path,arg,flags='p'):
 	:return: contents of path as a list
 	"""
 	subs= {
-					'all'		:	ls_A			,	'a'			:	ls_A 			,	'dirs'	:	ls_dirs		,	'd'			:	ls_dirs		,
-					'files'	:	ls_files	,	'f'			:	ls_files	,	'disks'	:	ls_disks	,	'k'			:	ls_disks	,
-					'pyod'	:	ls_pyod		,	'l'			:	ls_pyod		,
+					'all'  :	ls_A			,	'a':	ls_A 			,	'dirs':	ls_dirs		,	'd':	ls_dirs		,
+					'files':	ls_files	,	'f':	ls_files	,	'disks':	ls_blockdev	, 'k':	ls_blockdev	,
+					'pyod' :	ls_pyod		,	'l':	ls_pyod		,
 	}
 	ls= subs[str(arg)]
 	path=os.path.abspath(path)
@@ -107,15 +109,39 @@ def ls_files(path):
 	except FileNotFoundError:
 		f=''
 	return f
+	
+def ls_blockdev(**k) -> dict:
+	"""
+	:return: list of storage devices
+	"""
+	blockdevs={}
+	cmd_lsblk_devs = 'lsblk -I 259,8 --list -o TYPE,NAME,PATH'
+	result = subprocess_tee.run(cmd_lsblk_devs , tee=False)
+	for row in result.stdout.split('\u000A'):
+		if str(row[:4]).casefold() == 'disk'.casefold():
+			blockdev={'NAME':	row[5:].split('\u0020')[0],
+								'PATH':	row[5:].split('\u0020')[-1],}
+			blockdevs[blockdev['NAME']]= {**blockdev}
 
-def ls_disks(type):
-	split=[]
-	result = sproc.Popen("lsblk -I 259,8 --list -o FSTYPE,PATH,MOUNTPOINT,LABEL |awk '$1==\"btrfs\" {print $2,$4,$3}'| awk '$3 != \"\" {print $1, $3,$2 }'", tee=False)
-	resultsplit = result.stdout.strip().split('\n')
-	for line in resultsplit:
-		split+=[line.split()]
-	return split
+	for blockdev in blockdevs:
+		cmd_lsblk_dev=f'lsblk --pairs --all --fs --include 259,8 /dev/{blockdev}'
+		result = subprocess_tee.run(cmd_lsblk_dev , tee=False)
+		blockdevs[blockdev]=result.stdout.splitlines()
 
+	named_blockdevs={}
+	for blockdev, value in blockdevs.items():
+		named_blockdevs[blockdev]={}
+		for lst_dev in value:
+			dev=lst_dev.split()[0].split('=')[1].strip('"')
+			named_blockdevs[blockdev][dev]={}
+			for propset in lst_dev.split():
+				key = propset.split('=')[0]
+				val= propset.split('=')[-1]
+				if key != val:
+					val =propset.split('=')[1]
+					named_blockdevs[blockdev][dev][key]=val.strip('"')
+	return named_blockdevs
+	
 def ls_pyod(path, flags=''):
 	"""
 	similar to the systems 'ls -A' lists directory contents
@@ -142,12 +168,11 @@ def cp(srcdir, dest):
 	:return:
 	"""
 	cp_cmd=shlex.split(f'cp -rvpf {srcdir} {dest}')
-	popen = sproc.Popen(cp_cmd, stdout=sproc.PIPE, universal_newlines=True)
+	proc_cp = subprocess.Popen(cp_cmd, stdout=subprocess.PIPE, universal_newlines=True)
 	for line in iter(popen.stdout.readline, ""):
 		yield line
-	popen.stdout.close()
+	proc_cp.stdout.close()
 	return_code = popen.wait()
 	if return_code:
-		raise sproc.CalledProcessError(return_code, cp)
+		raise subprocess.CalledProcessError(return_code, cp)
 
-	

@@ -2,12 +2,12 @@
 print('import os,platform,sys')
 import os,platform,sys
 print('from btrwin import btrwin as main')
-from btrwin import btrwin as main
+import btrwin
 
 
 
 def Linux():
-	main.cli()
+	btrwin.main.cli()
 def Windows():
 	print('Sorry the Windows Part of this software is still under development and hasnt been implemented yet in this version of the software...\n exiting...')
 	exit()

@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "btrwin"
+version = "0.1.0"
+description = ""
+authors = ["hoefkensj <56705418+hoefkensj@users.noreply.github.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+subprocess-tee = "^0.3.5"
+click = "^8.0.3"
+click-command-tree = "^1.1.0"
+click-completion = "^0.5.2"
+click-completion-dyncomplete = "^0.5.2"
+click-default-group = "^1.2.2"
+click-man = "^0.4.1"
+click-option-group = "^0.5.3"
+click-params = "^0.1.2"
+click-spinner = "^0.1.10"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -19,32 +19,40 @@ def new(*a):
 # 	set_key(file=file, section=section, key=key, value=value)
 	
 def get_config(**k):
-	config=k['c']
-	path=k['p']
+	"""
+	gets config
+	:param k: path,conf
+	:keyword path: path
+	:keyword c: config parser
+	:return:
+	"""
+	config=k.get('c')
+	path=k.get('path')
 	if os.path.exists(path):
 		config.read(path)
 	return config
 
-def save_to_file(*a,**k):
-	'''
-	
-	:param k: f(ile)='' c(onf)=''
+def save_to_file(**k) -> None:
+	"""
+	writes the configparser config to a file.
+	:param k: keywords:file,conf
+	:keyword file: file to save the config to
+	:keyword conf: config(configparser) to be saved
 	:return:
-	'''
-	if len(a)== 2:
-		file=k.get('f') if k.get('f') is not None else a[0]
-		conf=k.get('c') if k.get('c') is not None else a[1]
-		with open(file, 'w') as file:
+	"""
+	file= k.get('file')
+	conf=k.get('conf')
+	with open(file, 'w') as file:
 			conf.write(file)
-	return
+
 
 def set_key(**k):
 	"""
 	
-	:param k['key']:
-	:param k['val']:
-	:param k['section']:
-	:param k['file']:
+	:keyword key:
+	:keyword val:
+	:keyword section:
+	:keyword file:
 	:return: config
 	"""
 	G=k.get('config')

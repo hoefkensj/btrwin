@@ -3,6 +3,12 @@ MASTER						:		{BTRWIN}/loaders/
 LUTRIS						:		{USERHOME}/.locale/share/lutris/
 HEROIC						:		{USERHOME}/.config/heroic/
 
+[HEROIC]
+RUNNERS						:		{HEROIC}/tools
+WINE						:		{RUNNERS}/wine
+PROTON						:		{RUNNERS}/proton
+DXVK						:		{RUNNERS}/dxvk
+
 [WINE]
 lutris						:		{LUTRIS}/.local/share/lutris/runners/wine
 heroic						:		{HEROIC}/tools/wine

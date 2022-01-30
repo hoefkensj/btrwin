@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-import units.main.main as main
+import btrwin.fnx.main.main
 
-main.main()
+btrwin.units.main.main.main()
 
-# def cli():
-# 	import units.ui.cli.cli as cli
-# 	cli.entry_point()
+# def click():
+# 	import fnx.ui.click.click as click
+# 	click.entry_point()

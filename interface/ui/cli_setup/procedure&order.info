@@ -1,0 +1,20 @@
+1 : sudo stuff
+	-see if any folders exist in root territory
+	-see the rights on those folders
+	-if not writable/readable and for sys : executable => give warning
+		-> cancel
+		-> sudo-change permissions to user
+		-> request sudo each time file access is required
+		-> setup keepsudoalive
+	-change all according to wishes
+
+2: requesst a name for the WorldConfig, if single user or only one is required suggest using btrwin
+	unless multiuser or multiple installs of same software with different envs for testing purposes  or to
+	keep games separated completely from required software , or to test windows malware on wine :)
+
+	-> create env_variable
+	BTRWIN={}
+	BTRWIN___WORLD_ACTIVE=f'{name}'
+
+
+

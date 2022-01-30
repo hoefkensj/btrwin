@@ -1,5 +1,9 @@
-#!/usr/bin/env
-# 	trwin.assets.__init__:
-from . import skel
-from . import locale
+#!/usr/bin/env	python
+####[DOCS]####
+"""
+PATH: btrwin.assets.__init__
+"""
+####[CODE]####
+from . import tools
 from . import static
+
