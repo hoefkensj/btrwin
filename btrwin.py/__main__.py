@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from . import main
+from fnx.main import main
 
 main.main()
 

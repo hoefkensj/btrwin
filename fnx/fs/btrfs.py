@@ -6,7 +6,8 @@ import btrwin.lib
 def select_disk(idx):
 	G=btrwin.fnx.conf.load
 	idx= idx-1
-	disks = btrwin.lib.fs.ls_blockdev('btrfs')
+	disks = btrwin.lib.fs.ls_blockdev()
+	print(disks)
 	G=G()
 	G['btrwin']['PATH']['mount']=disks[idx][0]
 
@@ -28,3 +29,6 @@ def mklist_btrfsdisks():
 				disks[idx][-1] += '\x1b[32m *\x1b[0m'
 	header=['Idx','Device','mountpoint','Label']
 	return disks
+
+
+
