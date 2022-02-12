@@ -16,7 +16,7 @@ entry_point()
 
 
 # 	fs()
-# from btrwin.cli_ctl import fs as cli_fs
+# from btrwin.ctl import fs as cli_fs
 # from .group2 import commands as group2
 #
 # @C.group()
@@ -27,7 +27,7 @@ entry_point()
 # entry_point.add_command(group2.version)
 #
 # @C.group()
-# def cli_ctl():
+# def ctl():
 # 	"""btrwin  help"""
 # 	fs()
 #
@@ -38,7 +38,7 @@ entry_point()
 #
 #
 # #################
-# @cli_ctl.group()
+# @ctl.group()
 # def prefix():
 # 	"""prefix help"""
 # 	pass

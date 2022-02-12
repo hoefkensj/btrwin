@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import btrwin.interface.ui.cli_ctl.main as cli
+import interface.ui.cli.ctl.main as cli
 entrypoint= cli.entry_point
 
 def main():

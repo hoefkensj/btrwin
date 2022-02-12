@@ -5,6 +5,7 @@ import shutil
 import shlex
 import subprocess
 import subprocess_tee
+import re
 # import subprocess_tee as subprocesst
 
 #logging.basicConfig(level=logging.INFO,filename='', format='%(message)s')
@@ -114,19 +115,50 @@ def ls_files(path):
 	
 
 def ls_btrfsvol():
+	pass
 
-def ls_blockdevs(**k) -> dict:
+def ls_blockdisks(**k) -> dict:
 	"""
 	:return: list of storage devices
 	"""
-
-	
-
-
 	cmd = 'lsblk' #259 = maj:NVME , 8 =maj:scsi/sata
-	cmd_args_default='--include 259,8 --all --list -o TYPE,NAME'
-	stdout_lsblk=subprocess.run(shlex.split(f'{cmd} {cmd_args_default}'), stdout=subprocess.PIPE).stdout.decode('utf-8')
-	print(stdout_lsblk)
+	cmd_args_default='--include 259,8  --noheadings --all --nodeps --list -o NAME'
+	lst_stdout=subprocess.run(shlex.split(f'{cmd} {cmd_args_default}'),capture_output=True,text=True,universal_newlines=True).stdout.split()
+
+	print(lst_stdout)
+
+def ls_blockparts(**k):
+	parts=[]
+	rex=re.compile('(.*?)\s')
+	cmd = 'lsblk'
+	cmd_args_default='--list --noheadings --all  -o NAME,LABEL,FSTYPE'
+	cmd_args_disk='/dev/{}'.format(k.get('disk')) if k.get('disk') else ''
+	lst_stdout=subprocess.run(shlex.split(f'{cmd} {cmd_args_default} {cmd_args_disk} '),capture_output=True,text=True,universal_newlines=True).stdout.splitlines()
+	for line in lst_stdout:
+		name=rex.search(line)
+		if str(name[1]).startswith('nvme') and str(name[1])[-2]=='p':
+			parts+=[line]
+		if str(name[1])[-1].isnumeric() and not str(name[1]).startswith('nvme'):
+			parts+=[line]
+	return parts
+
+def ls_blockfs(**k):
+	partsfs=allfsparts=[]
+	rex=re.compile('\s*([a-zA-Z0-9]*?)$')
+	cmd = 'lsblk'
+	cmd_args_default='--list --noheadings --all --sort FSTYPE  -o NAME,LABEL,FSTYPE'
+	cmd_args_disk='/dev/{}'.format(k.get('disk')) if k.get('disk') else ''
+	lst_stdout=subprocess.run(shlex.split(f'{cmd} {cmd_args_default}'),capture_output=True,text=True,universal_newlines=True).stdout.splitlines()
+	# for line in lst_stdout:
+	# 	print(str(rex.search(line)[1]))
+	partsfs= [line for line in lst_stdout if str(rex.search(line)[1]) == k.get('fs')]
+	allfsparts=[line for line in lst_stdout if str(rex.search(line)[1])]
+	return partsfs if k.get('fs') else allfsparts
+	
+def ls_blockfs_btrfs():
+	blockfs_btrfs=ls_blockfs(fs='btrfs')
+	for line in blockfs_btrfs:
+		print(line)
 
 
 def ls_pyod(path, flags=''):
@@ -163,4 +195,5 @@ def touch(fname, mode=0o666, dir_fd=None, **k):
 		dir_fd=None if os.supports_fd else dir_fd, **k)
 	return os.path.abspath(fname)
 
-ls_blockdevs()
+# [print(part) for part in ls_blockfs(fs='')]
+ls_blockfs_btrfs()

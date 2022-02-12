@@ -1,2 +1,1 @@
-from . import lib
-from . import fnx
+from . import main

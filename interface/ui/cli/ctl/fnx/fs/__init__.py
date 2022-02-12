@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 import click as C
-import btrwin.fnx
-
 
 from . import btrfs
 from . import ctl

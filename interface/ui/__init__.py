@@ -1,3 +1,3 @@
 #!/usr/bin/env python
-from . import cli_ctl
-from . import cli_setup
+from interface.ui.cli import ctl
+from interface.ui.cli import setup
