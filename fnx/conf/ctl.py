@@ -10,7 +10,7 @@ from btrwin.fnx.conf.load.ctl import load_env_config
 from btrwin.fnx.conf.load.ctl import load_global_config
 from btrwin.fnx.conf.load.ctl import load_sys_config
 from btrwin.fnx.conf.load.ctl import load_user_configs
-from btrwin.fnx.check.ctl import detect_disk
+
 def show_setting(**k):
 	# for idx,configfile in enumerate(glob.keys()):
 	# 	print(idx, '\t:\t',configfile)
@@ -178,16 +178,4 @@ def activate_world(name):
 	WORLD=os.environ.get('BTRWIN_WORLD_ACTIVE')
 	G=btrwin.fnx.conf.load()
 	return WORLD
-def select_disk(id):
-	"""
-	select btrfs volume to use for the active load
-	:param id: id of the btrfs volume
-	:return:
-	"""
-	valid = detect_disk()
-	if id  in range(1, valid + 1):
-		btrwin.fnx.fs.select_disk(id)
-		done=True
-	else:
-		done=False
-	return done
+

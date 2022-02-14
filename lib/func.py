@@ -13,7 +13,8 @@ def sprint(*a,**k):
 	:return:
 	"""
 	#aliasses
-	write = sys.stdout.write
+	def stdout_write():
+			sys.stdout.write
 
 	def table(lst_lines, tabspace=2, tabwidth=4, rownr=True ,rownr_offset=2):
 		"""

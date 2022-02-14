@@ -9,6 +9,7 @@ import fnx.check
 import fnx.conf
 import fnx.file
 import fnx.fs
+import fnx.fs.ctl
 import lib as lib
 
 
@@ -27,7 +28,7 @@ def Q0201_set_default_disk():
 		if disk == 0:
 			C.echo('Detected Btrfs Volumes (mounted):')
 			fnx.fs.list()
-	fnx.conf.ctl.select_disk(disk)
+	fnx.fs.ctl.fs_select_set(disk)
 	return fnx.fs.get_list()[disk - 1][1]
 def save(section):
 	save = fnx.conf.save
@@ -97,7 +98,7 @@ def prompt() -> None:
 		if disk == 0:
 			C.echo('Detected Btrfs Volumes (mounted):')
 			fnx.fs.list()
-	fnx.conf.ctl.select_disk(disk)
+	fnx.fs.ctl.fs_select_set(disk)
 	mount=fnx.fs.get_list()[disk - 1][1]
 	
 	pth = ask(Q.scheme[.03_01])

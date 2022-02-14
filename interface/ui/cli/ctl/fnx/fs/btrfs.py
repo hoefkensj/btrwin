@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import click as C
-import btrwin.fnx
+import btrwin.fnx.fs.btrfs
 
 
 
@@ -20,7 +20,7 @@ def create(parent,name):
 	:param name:
 	:return:
 	"""
-	fnx.fs.btrfs.lib_fsbtrfs.create_subv(parent, name)
+	btrwin.fnx.fs.btrfs.lib_fsbtrfs.create_subv(parent, name)
 	
 @btrfs.command()
 @C.argument('--parent')
@@ -32,7 +32,7 @@ def delete(parent,name):
 	:param name:
 	:return:
 	"""
-	fnx.fs.btrfs.lib_fsbtrfs.del_subv(parent=parent, name=name)
+	btrwin.fnx.fs.btrfs.lib_fsbtrfs.del_subv(parent=parent, name=name)
 	
 @btrfs.command()
 @C.argument('--parent')
@@ -46,7 +46,7 @@ def snapshot(parent,source,name):
 	:param name:
 	:return:
 	"""
-	fnx.fs.btrfs.lib_fsbtrfs.create_snapshot(parent=parent, src=source, dst=name)
+	btrwin.fnx.fs.btrfs.lib_fsbtrfs.create_snapshot(parent=parent, src=source, dst=name)
 	pass
 
 @btrfs.command()
@@ -66,6 +66,6 @@ def ids(subvolume):
 	:param subvolume:
 	:return:
 	"""
-	fnx.fs.btrfs.lib_fsbtrfs.install_btrfs_subv_meta(subv=subvolume)
+	btrwin.fnx.fs.btrfs.lib_fsbtrfs.install_btrfs_subv_meta(subv=subvolume)
 	pass
 

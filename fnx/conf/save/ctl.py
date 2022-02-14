@@ -3,8 +3,8 @@
 #	META	::AUTHOR:;PIM:;PATH:hoefkensj.github.io
 #	LEGAL	::LICENSE:
 import os
+import btrwin.lib.conf
 
-import btrwin.lib
 def save_global_config(G):
 
 	for configfile in G.keys():
@@ -13,4 +13,4 @@ def save_global_config(G):
 		else:
 			path=os.path.join(os.getenv("HOME"), '.config/btrwin', f'{configfile}.conf')
 		config=G[configfile]
-		lib.conf.save_to_file(path, config)
+		btrwin.lib.conf.savefile(path, config)

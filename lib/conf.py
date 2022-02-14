@@ -18,7 +18,7 @@ def new(*a):
 # def set(key,value,section,file):
 # 	set_key(file=file, section=section, key=key, value=value)
 	
-def get_config(**k):
+def readfile(**k):
 	"""
 	gets config
 	:param k: path,conf
@@ -32,7 +32,7 @@ def get_config(**k):
 		config.read(path)
 	return config
 
-def save_to_file(**k) -> None:
+def savefile(**k) -> None:
 	"""
 	writes the configparser config to a file.
 	:param k: keywords:file,conf

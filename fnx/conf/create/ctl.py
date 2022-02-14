@@ -15,14 +15,14 @@ def create_world_config(name):
 	#initialize the config
 	conf_world=fnx.conf.ctl.create_new_worldconf(name)
 	#write the cofnig to the configfile
-	lib.conf.save_to_file(file=file_world,conf=conf_world)
+	lib.conf.savefile(file=file_world, conf=conf_world)
 	#read the config again from the file
-	conf_world=lib.conf.get_config(path=file_world,c=lib.conf.new())
+	conf_world=lib.conf.readfile(path=file_world, c=lib.conf.new())
 	#set the path of the config file in  the config now that it exists:
 	conf_world['PATH']['worldconfig'] = f'{file_world}'
 	#save the config again and reload
-	lib.conf.save_to_file(file=file_world,conf=conf_world)
-	conf_world=lib.conf.get_config(path=file_world,c=lib.conf.new())
+	lib.conf.savefile(file=file_world, conf=conf_world)
+	conf_world=lib.conf.readfile(path=file_world, c=lib.conf.new())
 	return conf_world
 
 def init_sysconf():

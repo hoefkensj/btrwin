@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import click as C
 
+
 from . import btrfs
 from . import ctl
 
@@ -9,19 +10,18 @@ def fs():
 	"""fs help"""
 	pass
 
+
+
+
 @fs.command()
 def list():
-	"""list availeble btrfs volumes"""
-	fnx.fs.list()
+	"""list volumes"""
+	import btrwin.fnx.fs.ctl
+	btrwin.fnx.fs.ctl.list()
 
 
-@fs.command()
-@C.argument('idx')
-def select(idx):
-	"""select the btrfs volume to use see ..list for index numbers  """
-	fnx.conf.ctl.select_disk(int(idx))
 
- 
+
  
 fs.add_command(btrfs.btrfs)
-fs.add_command(ctl.ctl)
+fs.add_command(ctl.select)

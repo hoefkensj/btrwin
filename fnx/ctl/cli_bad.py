@@ -10,6 +10,8 @@ import btrwin.fnx as units
 import fnx.check.ctl
 import fnx.conf.ctl
 import fnx.file.ctl
+import fnx.fs.ctl
+
 Q = types.SimpleNamespace()
 
 cp = lib.fs.cp
@@ -48,7 +50,7 @@ def Q0201_set_default_disk():
 		if disk == 0:
 			C.echo('Detected Btrfs Volumes (mounted):')
 			fnx.fs.list()
-	fnx.conf.ctl.select_disk(disk)
+	fnx.fs.ctl.fs_select_set(disk)
 	return fnx.fs.get_list()[disk - 1][1]
 
 
@@ -154,7 +156,7 @@ def prompt() -> None:
 		if disk == 0:
 			C.echo('Detected Btrfs Volumes (mounted):')
 			fnx.fs.list()
-	fnx.conf.ctl.select_disk(disk)
+	fnx.fs.ctl.fs_select_set(disk)
 	mount=fnx.fs.get_list()[disk - 1][1]
 	
 	pth = ask(Q.scheme[.03_01])

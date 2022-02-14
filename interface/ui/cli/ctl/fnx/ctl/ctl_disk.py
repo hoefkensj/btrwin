@@ -3,6 +3,8 @@ import click as C
 import btrwin.fnx.check.ctl
 import btrwin.fnx.conf.ctl
 import btrwin.fnx.file.ctl
+import fnx.fs.ctl
+
 @C.group()
 def disk():
 	"""disk help"""
@@ -25,7 +27,7 @@ def select(id):
 	:param id: id of disk to select use list to get valid id's
 	:return:
 	"""
-	btrwin.fnx.conf.ctl.select_disk(id=id)
+	fnx.fs.ctl.fs_select_set(id=id)
 
 @disk.command()
 def list():

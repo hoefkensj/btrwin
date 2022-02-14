@@ -23,14 +23,14 @@ def create_world_config(name):
 	#initialize the config
 	conf_world=btrwin.fnx.conf.ctl.create_new_worldconf(name)
 	#write the cofnig to the configfile
-	btrwin.lib.conf.save_to_file(file=file_world, conf=conf_world)
+	btrwin.lib.conf.savefile(file=file_world, conf=conf_world)
 	#read the config again from the file
-	conf_world= btrwin.lib.conf.get_config(path=file_world, c=btrwin.lib.conf.new())
+	conf_world= btrwin.lib.conf.readfile(path=file_world, c=btrwin.lib.conf.new())
 	#set the path of the config file in  the config now that it exists:
 	conf_world['PATH']['worldconfig'] = f'{file_world}'
 	#save the config again and reload
-	btrwin.lib.conf.save_to_file(file=file_world, conf=conf_world)
-	conf_world= btrwin.lib.conf.get_config(path=file_world, c=btrwin.lib.conf.new())
+	btrwin.lib.conf.savefile(file=file_world, conf=conf_world)
+	conf_world= btrwin.lib.conf.readfile(path=file_world, c=btrwin.lib.conf.new())
 	return conf_world
 	
 def activate_world(name):

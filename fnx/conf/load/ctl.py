@@ -3,9 +3,7 @@
 #	META	::AUTHOR:;PIM:;PATH:hoefkensj.github.io
 #	LEGAL	::LICENSE:
 import os
-
 import btrwin.lib
-
 
 def load_config(**k):
 	"""
@@ -15,8 +13,8 @@ def load_config(**k):
 	:keyword c: configparser
 	:return: config
 	"""
-	cfg=btrwin.lib.conf.get_config(c=btrwin.lib.conf.new(),**k)
-	return cfg
+	k['c']=btrwin.lib.conf.new() if not k.get('c') else k.get('c')
+	return btrwin.lib.conf.readfile(**k)
 
 def load_env_config(c):
 	env_config={}
@@ -46,11 +44,11 @@ def load_sys_config(**k):
 	sys_cfg=load_world_config(world=WORLD,c=config)
 	return {f'{WORLD}' : sys_cfg}
 
-def load_user_configs(c):
+def load_user_configs():
 	files = btrwin.lib.fs.ls_files(btrwin.lib.path.CONFIG["USER"])
 	cfg_files=[os.path.split(f)[1][:-5] for f in files if f[-5:] == '.conf']
 	user_cfg = {cfg				: load_config(os.path.join(btrwin.lib.path.CONFIG["USER"], f'{cfg}.conf')) for cfg in cfg_files}
-	return u
+	return user_cfg
 
 def load_global_config():
 	"""

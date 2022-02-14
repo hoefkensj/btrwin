@@ -9,6 +9,7 @@ python = "^3.10"
 click = "^8.0.3"
 btrfs = "^13"
 colorama = "^0.4.4"
+ansitable = "^0.9.6"
 
 [tool.poetry.dev-dependencies]
 

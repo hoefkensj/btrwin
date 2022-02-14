@@ -1,4 +1,15 @@
 [[package]]
+name = "ansitable"
+version = "0.9.6"
+description = "Quick and easy display of tabular data and matrices with optional ANSI color and borders."
+category = "main"
+optional = false
+python-versions = ">=3.4"
+
+[package.dependencies]
+colored = "*"
+
+[[package]]
 name = "btrfs"
 version = "13"
 description = "Python module to interact programmatically with an online btrfs file system"
@@ -25,11 +36,22 @@ category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
+[[package]]
+name = "colored"
+version = "1.4.3"
+description = "Simple library for color and formatting to terminal"
+category = "main"
+optional = false
+python-versions = "*"
+
 [metadata]
 python-versions = "^3.10"
-content-hash = "bb40a5c462cab7c0ca0463b0a0f4d5f414b2dba6b52daa743369e316c62fac75"
+content-hash = "6e92ccbef569386944e34bc699071c24bdbdae58bd534d42c1e0137b3449c97b"
 
 [metadata.files]
+ansitable = [
+    {file = "ansitable-0.9.6.tar.gz", hash = "sha256:f15a81c41cd2b1c027640fedbdd5fd7b1ff46d959a06c4cdee825af3818df15e"},
+]
 btrfs = [
     {file = "btrfs-13.tar.gz", hash = "sha256:352cb38691d80e4ba7b94d74e179db54271544d0e8541cf82ae251ac4ed630ed"},
 ]
@@ -40,4 +62,7 @@ click = [
 colorama = [
     {file = "colorama-0.4.4-py2.py3-none-any.whl", hash = "sha256:9f47eda37229f68eee03b24b9748937c7dc3868f906e8ba69fbcbdd3bc5dc3e2"},
     {file = "colorama-0.4.4.tar.gz", hash = "sha256:5941b2b48a20143d2267e95b1c2a7603ce057ee39fd88e7329b0c292aa16869b"},
+]
+colored = [
+    {file = "colored-1.4.3.tar.gz", hash = "sha256:b7b48b9f40e8a65bbb54813d5d79dd008dc8b8c5638d5bbfd30fc5a82e6def7a"},
 ]

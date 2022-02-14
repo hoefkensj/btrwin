@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-
-import os,platform,sys
-import btrwin
+import btrwin.main
 
 btrwin.main.ui.default()

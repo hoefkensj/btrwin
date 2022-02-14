@@ -78,7 +78,7 @@ def ls(path,arg,flags='p'):
 	"""
 	subs= {
 					'all'  :	ls_A			,	'a':	ls_A 			,	'dirs':	ls_dirs		,	'd':	ls_dirs		,
-					'files':	ls_files	,	'f':	ls_files	,	'disks':	ls_blockdev	, 'k':	ls_blockdev	,
+					'files':	ls_files	,	'f':	ls_files	,	'disks':	ls_blkdisks	, 'k':	ls_blkdisks	,
 					'pyod' :	ls_pyod		,	'l':	ls_pyod		,
 	}
 	lsfn= subs[str(arg)]
@@ -95,11 +95,12 @@ def ls_A(path):
 	li+= files
 	return li
 
-def ls_dirs(path):
+def ls_dirs(path,**k):
 	"""
 	:param path: path to directory to list
 	:return: list of dirs in path (/path/dir)
 	"""
+	
 	return [os.path.join(path, name) for name in os.listdir(path) if os.path.isdir(os.path.join(path, name))]
 
 def ls_files(path):
@@ -117,49 +118,59 @@ def ls_files(path):
 def ls_btrfsvol():
 	pass
 
-def ls_blockdisks(**k) -> dict:
+def ls_blk(**k):
+	cmd = 'lsblk'
+	cmd_args_default='--list --noheadings --all'
+	cmd_opts=k.get('opts') if k.get('opts') else ''
+	cmd_line=f'{cmd} {cmd_args_default} {cmd_opts}'#.format(cmd=cmd,cmd_args_default=cmd_args_default,cmd_opts=cmd_opts)
+	lst_cmdline=shlex.split(cmd_line)
+	return subprocess.run(lst_cmdline,capture_output=True,text=True,universal_newlines=True)
+
+def ls_blkdisks(**k) -> dict:
 	"""
 	:return: list of storage devices
 	"""
-	cmd = 'lsblk' #259 = maj:NVME , 8 =maj:scsi/sata
-	cmd_args_default='--include 259,8  --noheadings --all --nodeps --list -o NAME'
-	lst_stdout=subprocess.run(shlex.split(f'{cmd} {cmd_args_default}'),capture_output=True,text=True,universal_newlines=True).stdout.split()
+	cmd_opts='--include 259,8 --nodeps -o NAME'#259 = maj:NVME , 8 =maj:scsi/sata
+	return ls_blk(opts=cmd_opts).stdout.splitlines()
 
-	print(lst_stdout)
-
-def ls_blockparts(**k):
-	parts=[]
-	rex=re.compile('(.*?)\s')
-	cmd = 'lsblk'
-	cmd_args_default='--list --noheadings --all  -o NAME,LABEL,FSTYPE'
+def ls_blkparts(**k):
 	cmd_args_disk='/dev/{}'.format(k.get('disk')) if k.get('disk') else ''
-	lst_stdout=subprocess.run(shlex.split(f'{cmd} {cmd_args_default} {cmd_args_disk} '),capture_output=True,text=True,universal_newlines=True).stdout.splitlines()
-	for line in lst_stdout:
-		name=rex.search(line)
-		if str(name[1]).startswith('nvme') and str(name[1])[-2]=='p':
-			parts+=[line]
-		if str(name[1])[-1].isnumeric() and not str(name[1]).startswith('nvme'):
-			parts+=[line]
+	cmd_opts=f'-o TYPE,NAME {cmd_args_disk}'
+	lst_stdout=ls_blk(opts=cmd_opts).stdout.splitlines()
+	parts=[line.split()[1] for line in lst_stdout if line.split()[0]=='part']
 	return parts
 
-def ls_blockfs(**k):
-	partsfs=allfsparts=[]
+
+def ls_blkfs(**k):
 	rex=re.compile('\s*([a-zA-Z0-9]*?)$')
-	cmd = 'lsblk'
-	cmd_args_default='--list --noheadings --all --sort FSTYPE  -o NAME,LABEL,FSTYPE'
+	partsfs=allfsparts=[]
 	cmd_args_disk='/dev/{}'.format(k.get('disk')) if k.get('disk') else ''
-	lst_stdout=subprocess.run(shlex.split(f'{cmd} {cmd_args_default}'),capture_output=True,text=True,universal_newlines=True).stdout.splitlines()
-	# for line in lst_stdout:
-	# 	print(str(rex.search(line)[1]))
-	partsfs= [line for line in lst_stdout if str(rex.search(line)[1]) == k.get('fs')]
+	cmd_opts=f'--sort FSTYPE -o NAME,FSTYPE {cmd_args_disk}'
+	lst_stdout=ls_blk(opts=cmd_opts).stdout.splitlines()
+	partsfs= [line.split()[0] for line in lst_stdout if str(rex.search(line)[1]) == k.get('fs')]
 	allfsparts=[line for line in lst_stdout if str(rex.search(line)[1])]
 	return partsfs if k.get('fs') else allfsparts
-	
-def ls_blockfs_btrfs():
-	blockfs_btrfs=ls_blockfs(fs='btrfs')
-	for line in blockfs_btrfs:
-		print(line)
 
+# print(ls_blkfs(disk='nvme1n1',fs='ntfs'))
+
+def ls_fs_btrfs():
+	sys_btrfs='/sys/fs/btrfs/'
+	if os.path.isdir(sys_btrfs):
+		btrfs_vols=ls_dirs(sys_btrfs)
+		btrfs_vols= [os.path.join(sys_btrfs,vol) for vol in btrfs_vols if vol!= os.path.join(sys_btrfs,'features')]
+		btrfs_devs=[]
+		for vol in btrfs_vols:
+			devices=[os.path.split(dev)[1] for dev in  ls_dirs(os.path.join(vol,'devices'))]
+			if os.path.isfile(os.path.join(vol,'label')):
+				with open(os.path.join(vol,'label'),'r') as label:
+					label=label.read().strip()
+			else:
+				label='!!NOLABEL!!'
+			dev=[label,os.path.split(vol)[1],devices]
+			btrfs_devs+=[dev]
+	return btrfs_devs
+
+# def ls_blk_mounts():
 
 def ls_pyod(path, flags=''):
 	"""
@@ -195,5 +206,3 @@ def touch(fname, mode=0o666, dir_fd=None, **k):
 		dir_fd=None if os.supports_fd else dir_fd, **k)
 	return os.path.abspath(fname)
 
-# [print(part) for part in ls_blockfs(fs='')]
-ls_blockfs_btrfs()
