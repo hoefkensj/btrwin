@@ -4,7 +4,6 @@ import logging
 import shutil
 import shlex
 import subprocess
-import subprocess_tee
 import re
 # import subprocess_tee as subprocesst
 
@@ -25,7 +24,6 @@ def cp(srcdir, dest):
 	return_code = proc_cp.wait()
 	if return_code:
 		raise subprocess.CalledProcessError(return_code, cp)
-
 
 def mkdirtree(dic, path):
 	"""
@@ -62,7 +60,6 @@ def mklink(src,lnk):
 	try:os.rmdir(lnk)
 	except FileNotFoundError:pass
 	os.symlink(src,lnk)
-
 
 def ls(path,arg,flags='p'):
 	"""
@@ -114,7 +111,6 @@ def ls_files(path):
 		f=''
 	return f
 	
-
 def ls_btrfsvol():
 	pass
 

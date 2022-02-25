@@ -7,12 +7,22 @@ from . import fnx
 @C.group()
 def entry_point():
     pass
-
-entry_point.add_command(fnx.fs.fs)
+    
+# entry_point.add_command(fnx.check.check)
 entry_point.add_command(fnx.conf.conf)
 entry_point.add_command(fnx.ctl.ctl)
+# entry_point.add_command(fnx.file.file)
+entry_point.add_command(fnx.fs.fs)
+# entry_point.add_command(fnx.loader.loader)
+# entry_point.add_command(fnx.prefix.prefix))
 
-entry_point()
+
+
+
+
+
+
+entry_point(prog_name="btrwin")
 
 
 # 	fs()
