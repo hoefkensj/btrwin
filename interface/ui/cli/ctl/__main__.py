@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from .main import entry_point as main
+from . import main
 
-main()
+main.entry_point()
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import click as C
 import btrwin.fnx.conf.load.ctl
+
 @C.group()
 def load():
 	pass

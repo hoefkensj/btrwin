@@ -4,7 +4,7 @@ import btrwin.fnx
 import btrwin.lib
 
 def select_disk(**k):
-	G=btrwin.fnx.conf.load.ctl.load_world_config()
+	G=btrwin.fnx.conf.load.ctl.world_config()
 	idx=k.get('idx')
 	disks = btrwin.lib.fs.ls_blockdev()
 	G['btrwin']['PATH']['mount']=disks[idx][0]
@@ -12,7 +12,7 @@ def select_disk(**k):
 
 	
 def selected_disk():
-	G=btrwin.fnx.conf.load.ctl.load_global_config()
+	G=btrwin.fnx.conf.load.ctl.global_config()
 	try:	disk = G['btrwin']['PATH']['mount']
 	except KeyError: disk=None
 	return disk

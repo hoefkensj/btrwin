@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import betterwin
 import fnx.conf.load.ctl
-G= fnx.conf.load.main.load_global_config()
+G= fnx.conf.load.main.global_config()
 
 def read_skell(skel):
 	with open(skel) as template:

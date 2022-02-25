@@ -5,8 +5,12 @@ from . import fnx
 
 
 @C.group()
-def entry_point():
-    pass
+def entry_point(**k):
+	"""
+	help entrypoint
+	:return:
+	"""
+	pass
     
 # entry_point.add_command(fnx.check.check)
 entry_point.add_command(fnx.conf.conf)
@@ -22,7 +26,7 @@ entry_point.add_command(fnx.fs.fs)
 
 
 
-entry_point(prog_name="btrwin")
+entry_point(prog_name="btrwin ctl")
 
 
 # 	fs()

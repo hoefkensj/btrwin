@@ -1,19 +1,21 @@
 #!/usr/bin/env python
 import os
-os.environ["BTRWIN_NAME"]='btrwin'
+os.environ["BTRWIN_WORLD"]='btrwin'
 CFG									=	f'btrwin'
-NAME								= f'{os.environ.get("BTRWIN_NAME")}'
+WORLD								= f'{os.environ.get("BTRWIN_WORLD")}'
 
 DIR									=	{}
 DIR["HOME"]					= f'{os.environ.get("HOME") if os.environ.get("HOME") else os.environ.get("HOMEPATH")}'
-DIR["OS_CONFIG"]		=	f'/etc'
+DIR['OS_ROOT']			= f'{os.path.join(DIR["HOME"], "BTRWIN_FAKEROOT")}'
+#DIR['OS_ROOT']			= f'/'
+DIR["OS_CONFIG"]		=	f'etc'
 DIR["USER_CONFIG"]	= f'.config'
 
 CONFIG							=	{}
-CONFIG["OS"]				= F'{DIR["OS_CONFIG"]}'
-CONFIG["SYS"]				=	f'{os.path.join(	DIR["OS_CONFIG"],	CFG													)}'
+CONFIG["OS"]				= F'{os.path.join(	DIR["OS_ROOT"],		DIR["OS_CONFIG"]						)}'
+CONFIG["SYS"]				=	f'{os.path.join(	DIR["OS_ROOT"],		DIR["OS_CONFIG"],	CFG				)}'
 CONFIG["HOME"]			=	f'{os.path.join(	DIR["HOME"],			DIR["USER_CONFIG"]					)}'
-CONFIG["USER"]			=	f'{os.path.join(	DIR["HOME"],			DIR["USER_CONFIG"],		NAME	)}'
+CONFIG["USER"]			=	f'{os.path.join(	DIR["HOME"],			DIR["USER_CONFIG"],		WORLD	)}'
 
 USER_config					=	{}
 

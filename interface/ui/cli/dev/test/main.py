@@ -9,7 +9,7 @@ def test():
 
 
 @C.group('ansi')
-def ansi()
+def ansi():
 	"""
 	test ansi functions
 	:return:  None

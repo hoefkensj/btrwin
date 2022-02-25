@@ -4,6 +4,8 @@ import btrwin.fnx
 import btrwin.lib
 import btrwin.fnx.conf.load.ctl
 import btrwin.fnx.conf.save.ctl
+
+
 @C.group()
 def ctl():
 	"""ctl help"""
@@ -41,17 +43,14 @@ def set(key,val,section,config):
 def save():
 	btrwin.fnx.conf.save.main.save_global_config()
 
-@ctl.command()
-def loadenv():
-	btrwin.fnx.conf.load.main.load_env_config()
+
+
 
 @ctl.command()
-def loaduser():
-	btrwin.fnx.conf.load.main.load_user_configs()
+def load():
+	pass
 
-@ctl.command()
-def loadsys():
-	btrwin.fnx.conf.load.main.load_sys_config()
+
 
 @ctl.command()
 def newsys():

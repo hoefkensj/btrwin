@@ -4,17 +4,13 @@ import sys
 import functools
 
 import btrwin.lib
-import btrwin.fnx
+import btrwin.fnx.conf.load.ctl
 
-from btrwin.fnx.conf.load.ctl import load_env_config
-from btrwin.fnx.conf.load.ctl import load_global_config
-from btrwin.fnx.conf.load.ctl import load_sys_config
-from btrwin.fnx.conf.load.ctl import load_user_configs
 
 def show_setting(**k):
 	# for idx,configfile in enumerate(glob.keys()):
 	# 	print(idx, '\t:\t',configfile)
-	glob= load_global_config()
+	glob= btrwin.fnx.conf.load.ctl.global_config()
 	if  k.get('file'):
 		file = k['file']
 		print(f'|->{file}/')
@@ -44,9 +40,20 @@ def show_setting(**k):
 	else:
 		print(glob.keys())
 
-def show_world_config(world):
+def show_world_config(**k):
+	world=k.get('W')
+	k['c']=btrwin.lib.conf.new() #use new configparser config as to not to replace the active one in glob config!
 	sprint=sys.stdout.write
-	G= btrwin.fnx.conf.load.ctl.load_global_config()
+	c= btrwin.fnx.conf.load.ctl.world_config(**k)
+	
+	def unpack(cfg):
+		for item in cfg:
+			print(item)
+
+	
+	unpack(c)
+	
+	
 	def s_fx():
 		"""
 		is string_fix is string_prefix + string_suffix for config:show
@@ -57,6 +64,7 @@ def show_world_config(world):
 						('|---> ',''		),)
 		return fx[0],fx[1],fx[2]
 		
+	
 	char=0
 	sf,ss,so=s_fx()
 	for file in G.keys():
@@ -95,7 +103,7 @@ def show_world_config(world):
 
 def show_global_config():
 	sprint=sys.stdout.write
-	G= fnx.conf.load()
+	G= btrwin.fnx.conf.ctl.load()
 	def s_fx():
 		"""
 		is string_fix is string_prefix + string_suffix for config:show
@@ -143,11 +151,11 @@ def show_global_config():
 		print(f'|')
 
 def create_sys_config_dir():
-	if not '/etc/btrwin' in lib.fs.ls_dirs('/etc/'):
+	if not '/etc/btrwin' in btrwin.lib.fs.ls_dirs('/etc/'):
 		os.mkdir('/etc/btrwin')
 
 def create_new_worldconf(name):
-	config = lib.conf.new()
+	config = btrwin.lib.conf.new()
 	config['DEFAULT'] = {}
 #	config['DEFAULT'[::-1]] = {} #default sextion listing hack
 	config['PATH'] = {}
@@ -165,9 +173,10 @@ def create_new_worldconf(name):
 	# with open(f'/etc/btrwin/{fname}.conf','w') as f:
 	# 	config.write(f)
 
-load_sys_config		= functools.partial(load_sys_config, c=btrwin.lib.conf.new())
-load_user_configs	= functools.partial(load_user_configs, c=btrwin.lib.conf.new())
-load_env_config		= functools.partial(load_env_config, c=btrwin.lib.conf.new())
+def load_sys_config():	return btrwin.fnx.conf.load.ctl.sys_config(c=btrwin.lib.conf.new())
+def load_user_configs():return btrwin.fnx.conf.load.ctl.user_configs(c=btrwin.lib.conf.new())
+def load_env_config():	return btrwin.fnx.conf.load.ctl.env_config(c=btrwin.lib.conf.new())
+
 def activate_world(name):
 	"""
 	set a load config as the active one

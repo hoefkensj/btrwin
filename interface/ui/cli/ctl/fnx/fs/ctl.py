@@ -18,4 +18,4 @@ def list():
 def set(idx):
 	"""select the btrfs volume to use ,see list for index numbers  """
 	import btrwin.fnx.fs.ctl
-	btrwin.fnx.fs.ctl.fs_select_set(int(idx))
+	btrwin.fnx.fs.ctl.fs_select_set(idx=int(idx))

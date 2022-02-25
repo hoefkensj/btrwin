@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 import click 	as C
-import btrwin.fnx
 
-from . import show 		as c_show
-from . import create 	as c_create
-from . import ctl			as c_ctl
-from . import conf		as c_conf
-
+from . import show
+from . import create
+from . import ctl
+from . import main
+from . import load
 
 @C.group()
 def conf():
@@ -14,9 +13,11 @@ def conf():
 	pass
 
 @conf.command()
-def show():
-	fnx.conf.show()
+def paths():
+	import btrwin.fnx.conf.ctl
+	btrwin.fnx.conf.ctl.show_config_paths()
  
-conf.add_command(c_show.show)
-conf.add_command(c_create.create)
-conf.add_command(c_ctl.ctl)
+conf.add_command(show.show)
+conf.add_command(create.create)
+conf.add_command(ctl.ctl)
+conf.add_command(load.load.load())

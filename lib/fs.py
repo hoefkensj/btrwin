@@ -111,9 +111,6 @@ def ls_files(path):
 		f=''
 	return f
 	
-def ls_btrfsvol():
-	pass
-
 def ls_blk(**k):
 	cmd = 'lsblk'
 	cmd_args_default='--list --noheadings --all'
@@ -136,7 +133,6 @@ def ls_blkparts(**k):
 	parts=[line.split()[1] for line in lst_stdout if line.split()[0]=='part']
 	return parts
 
-
 def ls_blkfs(**k):
 	rex=re.compile('\s*([a-zA-Z0-9]*?)$')
 	partsfs=allfsparts=[]
@@ -146,8 +142,6 @@ def ls_blkfs(**k):
 	partsfs= [line.split()[0] for line in lst_stdout if str(rex.search(line)[1]) == k.get('fs')]
 	allfsparts=[line for line in lst_stdout if str(rex.search(line)[1])]
 	return partsfs if k.get('fs') else allfsparts
-
-# print(ls_blkfs(disk='nvme1n1',fs='ntfs'))
 
 def ls_fs_btrfs():
 	sys_btrfs='/sys/fs/btrfs/'

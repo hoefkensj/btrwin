@@ -19,15 +19,15 @@ def get_list():
 	disks=btrwin.fnx.fs.btrfs.mklist_btrfsdisks()
 	return  disks
 
-def fs_select_set(id):
+def fs_select_set(**k):
 	"""
 	select btrfs volume to use for the active load
 	:param id: id of the btrfs volume
 	:return:
 	"""
-	valid = fnx.check.ctl.detect_disk()
+	valid = btrwin.fnx.check.ctl.detect_disk()
 	if id  in range(1, valid + 1):
-		btrwin.fnx.fs.select_disk(id)
+		btrwin.fnx.fs.btrfs.select_disk(**k)
 		done=True
 	else:
 		done=False

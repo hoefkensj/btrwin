@@ -26,11 +26,11 @@ def readfile(**k):
 	:keyword c: config parser
 	:return:
 	"""
-	config=k.get('c')
-	path=k.get('path')
+	c=k.get('c')
+	path=k.get('f')
 	if os.path.exists(path):
-		config.read(path)
-	return config
+		c.read(path)
+	return c
 
 def savefile(**k) -> None:
 	"""
@@ -40,8 +40,8 @@ def savefile(**k) -> None:
 	:keyword conf: config(configparser) to be saved
 	:return:
 	"""
-	file= k.get('file')
-	conf=k.get('conf')
+	file= k.get('f')
+	conf=k.get('c')
 	with open(file, 'w') as file:
 			conf.write(file)
 
@@ -55,9 +55,9 @@ def set_key(**k):
 	:keyword file:
 	:return: config
 	"""
-	G=k.get('config')
-	file = k.get('file')
-	section=k.get('section')
+	G=k.get('c')
+	file = k.get('f')
+	section=k.get('s')
 	key=k.get('key')
 	val=k.get('val')
 	config=G[file] if G.get(file) else new()

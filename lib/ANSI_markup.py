@@ -111,8 +111,17 @@ def setstyle(**k):
 		return str(txt_styled.format(placeholder=text))
 	return stdout_text
 
-
-
+def markup_test(**k):
+	full=[i for i in range(0,255)]
+	if k.get('r') == 'full':
+		test=[[0],[0],[full]]
+	if k.get('r') == 'all':
+		test={'r':full, 'g' :full , 'b' :full}
+		
+	for i in test:
+		print(f'{str(i[-1]).zfill(3)}:\t \033[{i[-1]}mTEST_string_..\t \033[0mEND.')
+		
+markup_test(r='full')
 
 # def table_gen(**k):
 # 	style=m()

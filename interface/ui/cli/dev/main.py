@@ -1,28 +1,21 @@
 #!/usr/bin/env python
 import click as C
 
-from . import fnx
-from . import dev
-
+from . import test
 @C.group()
 def entry_point():
-    pass
+	pass
     
 # entry_point.add_command(fnx.check.check)
-entry_point.add_command(fnx.conf.conf)
-entry_point.add_command(fnx.ctl.ctl)
-# entry_point.add_command(fnx.file.file)
-entry_point.add_command(fnx.fs.fs)
-# entry_point.add_command(fnx.loader.loader)
-# entry_point.add_command(fnx.prefix.prefix))
-
-entry_point.add_command(dev.test)
+entry_point.add_command(test.test)
 
 
 
 
 
-entry_point(prog_name="btrwin")
+
+
+entry_point(prog_name="btrwin: DEVELOPER MODE")
 
 
 # 	fs()

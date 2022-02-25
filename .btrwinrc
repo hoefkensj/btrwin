@@ -1,0 +1,16 @@
+[DEFAULT]
+CFG : btrwin
+WORLD : btrwin
+
+[DIR]
+HOME : /home/hoefkens
+OS_ROOT : /home/hoefkens/BTRWIN_FAKEROOT
+OS_CONFIG : etc
+USER_CONFIG : .config
+
+[CONFIG]
+OS : /home/hoefkens/BTRWIN_FAKEROOT/etc
+SYS : /home/hoefkens/BTRWIN_FAKEROOT/etc/btrwin
+HOME : /home/hoefkens/.config
+USER : /home/hoefkens/.config/btrwin
+

@@ -30,7 +30,7 @@ def detect_world(name):
 
 def detect_disk():
 		valid = 0
-		for idx, dsk in enumerate(btrwin.lib.fs.ls_blockdev('btrfs')):
+		for idx, dsk in enumerate(btrwin.lib.fs.ls_fs_btrfs()):
 			valid = idx + 1
 		return valid
 

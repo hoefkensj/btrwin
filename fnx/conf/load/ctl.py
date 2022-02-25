@@ -5,7 +5,7 @@
 import os
 import btrwin.lib
 
-def load_config(**k):
+def config(**k):
 	"""
 	loads configparser config
 	:param k: path,conf
@@ -16,7 +16,10 @@ def load_config(**k):
 	k['c']=btrwin.lib.conf.new() if not k.get('c') else k.get('c')
 	return btrwin.lib.conf.readfile(**k)
 
-def load_env_config(c):
+def running_config():
+	btrwinrc=os.path.join(os.path.dirname(__file__),'.btrwinrc')
+	c=config(f=btrwinrc,c=btrwin.lib.conf.new())
+def env_config(c):
 	env_config={}
 	env_config['BTRWIN']={}
 	for key in os.environ.keys():
@@ -32,25 +35,25 @@ def load_env_config(c):
 	c.read_dict(dict(dct))
 	return {'env' : c}
 
-def load_world_config(**k):
-	world=k.get('load')
+def world_config(**k):
+	world=k.get('W')
 	c=k.get('c')
-	c=load_config(path=os.path.join(btrwin.lib.path.CONFIG["SYS"], f'{world}.conf'), c=c)
+	c=config(path=os.path.join(assets.path.CONFIG["SYS"], f'{world}.conf'), c=c)
 	return c
 
-def load_sys_config(**k):
+def sys_config(**k):
 	WORLD=os.environ.get("BTRWIN_WORLD_ACTIVE")
 	config=btrwin.lib.conf.new()
-	sys_cfg=load_world_config(world=WORLD,c=config)
+	sys_cfg=world_config(world=WORLD, c=config)
 	return {f'{WORLD}' : sys_cfg}
 
-def load_user_configs():
-	files = btrwin.lib.fs.ls_files(btrwin.lib.path.CONFIG["USER"])
+def user_configs():
+	files = btrwin.lib.fs.ls_files(assets.path.CONFIG["USER"])
 	cfg_files=[os.path.split(f)[1][:-5] for f in files if f[-5:] == '.conf']
-	user_cfg = {cfg				: load_config(os.path.join(btrwin.lib.path.CONFIG["USER"], f'{cfg}.conf')) for cfg in cfg_files}
+	user_cfg = {cfg				: config(os.path.join(assets.path.CONFIG["USER"], f'{cfg}.conf')) for cfg in cfg_files}
 	return user_cfg
 
-def load_global_config():
+def global_config():
 	"""
 	global config = dict
 			structure:
@@ -63,9 +66,9 @@ def load_global_config():
 											},
 	:return: dict Global_Config
 	"""
-	system	= {'SYSTEM' :	load_sys_config(),},
+	system	= {'SYSTEM' :	sys_config(),},
 	#env			=	load_env_config(c=btrwin.lib.conf.new())
-	user		=	{'USER'		:	load_user_configs(),},
+	user		=	{'USER'		:	user_configs(),},
 
 	G={}
 	G['SYSTEM']	= system

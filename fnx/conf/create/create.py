@@ -2,6 +2,16 @@
 import os
 
 import btrwin.lib as lib
+
+def btrwinrc(**k):
+	import btrwin.assets.static.conf.path
+	config= btrwin.lib.conf.new()
+	config['DEFAULT'] = {'CFG' : btrwin.assets.static.conf.path.CFG,
+											 'WORLD': btrwin.assets.static.conf.path.WORLD}
+	config['DIR']			= btrwin.assets.static.conf.path.DIR
+	config['CONFIG']	=	btrwin.assets.static.conf.path.CONFIG
+	btrwin.lib.conf.savefile(f='.btrwinrc', c=config)
+
 def sys_sdir() -> None:
 	if 'btrwin' in lib.fs.ls_A('/etc/'):
 		if os.path.isfile('/etc/btrwin') or os.path.isdir('/etc/btrwin') :
