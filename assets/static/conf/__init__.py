@@ -4,3 +4,4 @@
 PATH: btrwin.assets.static.conf.__init__
 """
 ####[CODE]####
+from . import path

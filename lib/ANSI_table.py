@@ -20,12 +20,13 @@ ANSI_K= fn('K')
 
 
 
-def tabledata_width(**k):
+def tabledata_width(**k):e
 	flags=k.get('flags')
 	#sym shrink idx mark
 	pass
 	
-def terminal_width(stored=[0,]):
+def terminal_width(**k):
+	stored=k.get('stored')
 	width=(shutil.get_terminal_size()[0]-2)
 	stored+=[width]
 	diff=(-1*(stored[-2]-stored[-1]))

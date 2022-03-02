@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import click as C
+import fnx.conf.show.ctl
 
 @C.group()
 def show():
@@ -12,16 +13,21 @@ def show():
 def all():
 	"""prints full config to  stdout"""
 	import btrwin.fnx.conf.ctl
-	btrwin.fnx.conf.ctl.show_global_config()
+	fnx.conf.show.ctl.show_global_config()
 
 @show.command()
 @C.argument('worldconfig')
 def world(worldconfig):
 	"""prints full config to  stdout"""
 	import btrwin.fnx.conf.ctl
-	btrwin.fnx.conf.ctl.show_world_config(W=worldconfig)
+	fnx.conf.show.ctl.show_world_config(W=worldconfig)
 
 @show.command()
 def setting():
 	"""prints key-value settingspair to  stdout"""
 	pass
+@show.command()
+def rc():
+	"""prints full config to  stdout"""
+	import btrwin.fnx.conf.show.ctl
+	btrwin.fnx.conf.show.ctl.show_rc_config()

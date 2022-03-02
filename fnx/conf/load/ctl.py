@@ -17,8 +17,11 @@ def config(**k):
 	return btrwin.lib.conf.readfile(**k)
 
 def running_config():
-	btrwinrc=os.path.join(os.path.dirname(__file__),'.btrwinrc')
-	c=config(f=btrwinrc,c=btrwin.lib.conf.new())
+	btrwinrc=os.path.join(os.path.expanduser('~/.config'),'.btrwinrc')
+	conf={'rc' : config(f=btrwinrc,c=btrwin.lib.conf.new()),}
+	return conf
+	
+	
 def env_config(c):
 	env_config={}
 	env_config['BTRWIN']={}
@@ -32,13 +35,13 @@ def env_config(c):
 		elif key.startswith('CXOFFICE'.casefold()):
 			env_config['CXOFFICE'][key]=os.environ.get(key)
 
-	c.read_dict(dict(dct))
+	c.read_dict(dict(env_config))
 	return {'env' : c}
 
 def world_config(**k):
 	world=k.get('W')
 	c=k.get('c')
-	c=config(path=os.path.join(assets.path.CONFIG["SYS"], f'{world}.conf'), c=c)
+	c=config(f=os.path.join(btrwin.assets.static.conf.path.CONFIG["SYS"], f'{world}.conf'), c=c)
 	return c
 
 def sys_config(**k):
@@ -48,9 +51,10 @@ def sys_config(**k):
 	return {f'{WORLD}' : sys_cfg}
 
 def user_configs():
-	files = btrwin.lib.fs.ls_files(assets.path.CONFIG["USER"])
+	import btrwin.assets.static.conf.path
+	files = btrwin.lib.fs.ls_files(btrwin.assets.static.conf.path.CONFIG["USER"])
 	cfg_files=[os.path.split(f)[1][:-5] for f in files if f[-5:] == '.conf']
-	user_cfg = {cfg				: config(os.path.join(assets.path.CONFIG["USER"], f'{cfg}.conf')) for cfg in cfg_files}
+	user_cfg = {cfg				: config(os.path.join(btrwin.assets.static.conf.path.CONFIG["USER"], f'{cfg}.conf')) for cfg in cfg_files}
 	return user_cfg
 
 def global_config():

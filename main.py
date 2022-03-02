@@ -3,16 +3,17 @@ import pickle
 
 
 def interface_ui_cli_ctl(**k):
-	import btrwin.interface.ui.cli.ctl.main
-	return btrwin.interface.ui.cli.ctl.main.entry_point(**k)
+	import btrwin.interface.ui.cli.main
+	return btrwin.interface.ui.cli.main.ctl()
 
 
 def interface_ui_cli_dev(**k):
-	import btrwin.interface.ui.cli.dev
-	return btrwin.interface.ui.cli.dev.test.main.entry_point(**k)
+	import btrwin.interface.ui.cli.main
+	return btrwin.interface.ui.cli.main.dev()
+	
 def interface_ui_cli_setup(**k):
-	import btrwin.interface.ui.cli.dev
-	return btrwin.interface.ui.cli.dev.main.entry_point
+	import btrwin.interface.ui.cli.main
+	return btrwin.interface.ui.cli.main.setup()
 
 
 

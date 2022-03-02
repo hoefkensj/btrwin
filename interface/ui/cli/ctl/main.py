@@ -1,32 +1,21 @@
 #!/usr/bin/env python
 import click as C
 
-from . import fnx
-
-
 @C.group()
-def entry_point(**k):
-	"""
-	help entrypoint
-	:return:
-	"""
+def entry_point_ctl():
+	"""	help entrypoint : Controll"""
 	pass
-    
+	
+import btrwin.interface.ui.cli.ctl.fnx.conf.main
+import btrwin.interface.ui.cli.ctl.fnx.ctl.main
+import btrwin.interface.ui.cli.ctl.fnx.fs.main
 # entry_point.add_command(fnx.check.check)
-entry_point.add_command(fnx.conf.conf)
-entry_point.add_command(fnx.ctl.ctl)
+entry_point_ctl.add_command(btrwin.interface.ui.cli.ctl.fnx.conf.main.conf)
+entry_point_ctl.add_command(btrwin.interface.ui.cli.ctl.fnx.ctl.main.ctl)
 # entry_point.add_command(fnx.file.file)
-entry_point.add_command(fnx.fs.fs)
+entry_point_ctl.add_command(btrwin.interface.ui.cli.ctl.fnx.fs.main.fs)
 # entry_point.add_command(fnx.loader.loader)
 # entry_point.add_command(fnx.prefix.prefix))
-
-
-
-
-
-
-
-entry_point(prog_name="btrwin ctl")
 
 
 # 	fs()

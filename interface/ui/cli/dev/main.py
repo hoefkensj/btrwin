@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 import click as C
 
-from . import test
 @C.group()
-def entry_point():
+def entry_point_dev():
+	"""help entrypoint dev"""
+	
 	pass
     
 # entry_point.add_command(fnx.check.check)
-entry_point.add_command(test.test)
+from . import test
+entry_point_dev.add_command(test.main.test)
 
 
 
@@ -15,7 +17,7 @@ entry_point.add_command(test.test)
 
 
 
-entry_point(prog_name="btrwin: DEVELOPER MODE")
+#entry_point_dev(prog_name="btrwin: DEVELOPER MODE")
 
 
 # 	fs()
