@@ -8,9 +8,9 @@ env = {
 	'WINEDEBUG' 			: 	'-all',
 	'WINEARCH'				:	'win64',
 	'WINEDLLOVERRIDES'		:	'winemenubuilder.exe=d ',
-	'WINEPREFIX' 			:	'/run/media/hoefkens/btrd0v1/opt/BTRWin/subv/MSOffice2019',
-	'WINELOADER'			:	'/mnt/btrd0v1/opt/BTRWin/run/wine/lutris-6.14-4-x86_64/bin/wine64',
-	'WINESERVER'			:	'/mnt/btrd0v1/opt/BTRWin/run/wine/lutris-6.14-4-x86_64/bin/wineserver'
+	'WINEPREFIX' 			:	'/home/hoefkens/Games/Heroic/Prefixes/Red-Dead-Redemption-2/',
+	'WINELOADER'			:	'/opt/btrwin/loaders/wine/lutris-6.21-6-x86_64/bin/wine64',
+	'WINESERVER'			:	'/opt/btrwin/loaders/wine/lutris-6.21-6-x86_64/bin/wineserver'
 }
 sproc= partial( Popen, env=env, stdout=PIPE,
 				universal_newlines=True,

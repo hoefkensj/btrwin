@@ -1,20 +1,29 @@
 #!/usr/bin/env python
 import os,subprocess
-from fnx.conf import ctl
+
+env = {
+	**os.environ,
+	'WINEDEBUG' 			: 	'-all',
+	'WINEARCH'				:	'win64',
+	'WINEPREFIX' 			:	'/home/hoefkens/Games/Heroic/Prefixes/Red-Dead-Redemption-2/',
+	'WINELOADER'			:	'/opt/btrwin/loaders/wine/lutris-6.21-6-x86_64/bin/wine64',
+	'WINESERVER'			:	'/opt/btrwin/loaders/wine/lutris-6.21-6-x86_64/bin/wineserver',
+	'FONTCONFIG_FILE' : "/home/hoefkens/.wine/myfonts/fonts.conf",
+	'FONTCONFIG_PATH' : "/home/hoefkens/wine/myfonts"
+}
 
 
-PFX			=	'Office'
 bin=['winepath','wine64','wine','wineboot','winecfg','wineconsole','notepad','msiexec','wineserver','regsvr32','regedit',]
-env=['WINEDEBUG','WINEARCH','WINEDLLOVERRIDES','WINEPREFIX','WINELOADER','WINESERVER']
-WINE_ENV= ctl.glob[PFX]['WINE_ENV']
-WINE_BIN= ctl.glob[PFX]['WINE_BIN']
 
-b={key : WINE_BIN[key.upper()] for key in bin}
-e={**os.environ,**{key: WINE_ENV[key] for key in env}}
+b={key : f'/opt/btrwin/loaders/wine/lutris-6.21-6-x86_64/bin/{key}' for key in bin}
+
+
 #print(f"{'EXE' if __file__.split('/')[-1:][0].split('_')[-1:][0].split('.')[-1].isupper() else 'exe'}")
+b['exec']	=	f"/run/media/hoefkens/btrsdv1/Games/Epic/RedDeadRedemption2/PlayRDR2.exe"
 
-b['exec']	=	f"{ctl.glob[PFX]['PATH']['exes']}/{__file__.split('/')[-1:][0].split('_')[-1:][0].split('.')[0]}.EXE"
-winepath	=	subprocess.check_output(f"{b['winepath']} -w {b['exec']}", shell=True)
-sproc		=	subprocess.Popen(f"{b['wine']} {str(winepath.strip())[2:-1]}" ,env=e,shell=True)
+winepath2	=	subprocess.check_output(f"{b['winepath']} -w {b['exec']}", shell=True)
+
+winserver=subprocess.Popen(f"{b['wineserver']} -p 300 -d0",shell=True,env=env,stdout=subprocess.PIPE)
+sproc		=	subprocess.Popen(f"{b['wine64']} {str(winepath2.strip())[2:-2]}" ,env=env,shell=True)
 
 
