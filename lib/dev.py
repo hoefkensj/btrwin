@@ -30,10 +30,10 @@ def pkg():
 		!!! warning breaks when __init__. is in everyfolder of the path up until /  !!!
 		gets the folder(path) that is the highest up in the path that still is a python package
 		"""
-		pathself=sys.argv[0]
-		pself=pathself
-		parent_dir_pself=os.path.split(pself)[0]
-		pdirps=parent_dir_pself
+		pathself					=	sys.argv[0]
+		pself							=	pathself
+		parent_dir_pself	=	os.path.split(pself)[0]
+		pdirps						=	parent_dir_pself
 		lst_parent_folders_pself = pdirps.split('/')
 		lst_pdps=lst_parent_folders_pself
 		os.chdir(os.path.split(sys.argv[0])[0])
