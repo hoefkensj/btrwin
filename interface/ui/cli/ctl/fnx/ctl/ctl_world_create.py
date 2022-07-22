@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import click as C
-import btrwin.fnx.conf.create.ctl
+import btrwin.modules.conf.create.ctl
 import btrwin.fnx.file.create.ctl
 @C.group()
 def create():

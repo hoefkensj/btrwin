@@ -1,8 +1,9 @@
 #!/usr/bin/env python
-import os,pickle,multiprocessing,subprocess
+import os, multiprocessing
 from os import path as op
-from .. import conf
-G=conf.G()
+from modules import conf
+
+G= conf.G()
 BTW=G['btrwin']
 SVL=BTW['PATH']['subv']
 
@@ -50,7 +51,7 @@ def scan(PFX):
 	proc = multiprocessing.Process(
 				target=step,
 				args=(PFX))
-	proc.start(), proc.join()
+  proc.start(), proc.join()
 
 def main(pfx):
 	scan(pfx)

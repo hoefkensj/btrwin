@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import os,subprocess
-from fnx.conf import ctl
-
+from modules.conf import ctl
 
 PFX			=	'Office'
 bin=['winepath','wine64','wine','wineboot','winecfg','wineconsole','notepad','msiexec','wineserver','regsvr32','regedit',]

@@ -1,7 +1,8 @@
 
 #!/usr/bin/env python
 import subprocess
-from fnx import conf, common
+from fnx import common
+from modules import conf
 
 PFX			=	'Ableton'
 	

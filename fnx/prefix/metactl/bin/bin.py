@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-import betterwin
-import fnx.conf.load.ctl
 G= fnx.conf.load.main.global_config()
 
 def read_skell(skel):

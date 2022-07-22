@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 #sets the default prefix for ~/.winm
 import sys,os
-import btrwin.fnx as units
+import fnx as units
+
 def get_pfxx()
 	subvs=fnx.fs.btrfs.get_subvs()
 	pfxx=[pfx for pfx in subvs if 'tpl'  not in pfx]
@@ -17,10 +18,3 @@ def lnpfx(src):
 	if src is not None:
 		rmwinehome()
 		os.symlink(src,'~/.wine')
-
-def main():
-	pass
-
-
-if __name__ == '__main__':
-	main()

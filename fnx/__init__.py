@@ -5,7 +5,6 @@
 """
 ####[CODE]####
 from . import check
-from . import conf
 from . import ctl
 from . import file
 from . import fs

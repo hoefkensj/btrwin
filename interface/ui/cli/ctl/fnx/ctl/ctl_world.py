@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import click as C
-import btrwin.fnx.conf.ctl
+import btrwin.modules.conf.ctl
 
 from . import ctl_world_create
 @C.group()
@@ -16,7 +16,7 @@ def activate(world):
 	:param world: name of load
 	:return:
 	"""
-	WORLD= btrwin.fnx.conf.ctl.activate_world(world)
+	WORLD= btrwin.modules.conf.ctl.activate_world(world)
 	C.echo(WORLD)
 
 

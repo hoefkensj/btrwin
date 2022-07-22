@@ -6,9 +6,7 @@ import click as C
 import colorama as col
 import btrwin.assets as assets
 import btrwin.lib as lib
-import btrwin.fnx as units
 import fnx.check.ctl
-import fnx.conf.ctl
 import fnx.file.ctl
 import fnx.fs.ctl
 

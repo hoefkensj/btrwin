@@ -4,7 +4,7 @@
 #	LEGAL	::LICENSE:
 import os
 
-import btrwin.lib
+import lib
 def check_inst(name):
 		G=fnx.conf.load
 		G=G()

@@ -6,7 +6,6 @@ import os
 
 import click as C
 import fnx.check
-import fnx.conf
 import fnx.file
 import fnx.fs
 import fnx.fs.ctl

@@ -2,8 +2,8 @@
 import click as C
 import btrwin.fnx
 import btrwin.lib
-import btrwin.fnx.conf.load.ctl
-import btrwin.fnx.conf.save.ctl
+import btrwin.modules.conf.load.ctl
+import btrwin.modules.conf.save.ctl
 
 
 @C.group()
@@ -17,7 +17,7 @@ def show():
 	prints global config to stdout ;	alias for [conf] [show] [all]
 	:return:
 	"""
-	btrwin.fnx.conf.show()
+	btrwin.modules.conf.show()
 	pass
 
 
@@ -41,7 +41,7 @@ def set(key,val,section,config):
 
 @ctl.command()
 def save():
-	btrwin.fnx.conf.save.main.save_global_config()
+	btrwin.modules.conf.save.main.save_global_config()
 
 
 
@@ -54,5 +54,5 @@ def load():
 
 @ctl.command()
 def newsys():
-	btrwin.fnx.conf.ctl.create_new_sysconf()
+	btrwin.modules.conf.ctl.create_new_sysconf()
 

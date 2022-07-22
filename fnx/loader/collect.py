@@ -1,13 +1,11 @@
 #!/usr/bin/env python
 import os
 import lib
-import assets
-import fnx.conf.ctl
 
 def heroic():
 	tools={}
 	ROOT_DIR = os.path.dirname(os.path.abspath("requirements.txt"))
-	conf_ldrpaths=fnx.conf.load.ctl.config(os.path.join(ROOT_DIR, 'assets/static/paths_loaders.lib'))
+	conf_ldrpaths= modules.conf.load.ctl.config(os.path.join(ROOT_DIR, 'assets/static/paths_loaders.lib'))
 	loaders_wine=conf_ldrpaths['HEROIC']['WINE']
 	runners=lib.fs.ls_dirs('loaders_wine')
 	for runner in runners:

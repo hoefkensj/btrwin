@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import click as C
-import fnx.conf.show.ctl
+import modules.conf.show.ctl
 
 @C.group()
 def show():
@@ -12,15 +12,13 @@ def show():
 @show.command()
 def all():
 	"""prints full config to  stdout"""
-	import btrwin.fnx.conf.ctl
-	fnx.conf.show.ctl.show_global_config()
+	modules.conf.show.ctl.show_global_config()
 
 @show.command()
 @C.argument('worldconfig')
 def world(worldconfig):
 	"""prints full config to  stdout"""
-	import btrwin.fnx.conf.ctl
-	fnx.conf.show.ctl.show_world_config(W=worldconfig)
+	modules.conf.show.ctl.show_world_config(W=worldconfig)
 
 @show.command()
 def setting():

@@ -1,0 +1,86 @@
+{
+  "header": {
+    "comment": "eric session file for project btrwin",
+    "warning": "This file was generated automatically, do not edit.",
+    "saved": "2022-07-10, 16:54:18"
+  },
+  "MultiProject": "",
+  "Project": "",
+  "ViewManagerSplits": {
+    "Count": 1,
+    "Orientation": 2
+  },
+  "Editors": [
+    {
+      "Filename": "/home/hoefkens/Development/Code/Python/Projects_ACTIVE/btrwin/lib/conf.py",
+      "Cursor": [
+        20,
+        18
+      ],
+      "Folds": [],
+      "Zoom": 0,
+      "Clone": false,
+      "Splitindex": 0,
+      "Editorindex": 0
+    },
+    {
+      "Filename": "/home/hoefkens/Development/Code/Python/Projects_ACTIVE/btrwin/modules/conf/show/ctl.py",
+      "Cursor": [
+        119,
+        16
+      ],
+      "Folds": [],
+      "Zoom": 0,
+      "Clone": false,
+      "Splitindex": 0,
+      "Editorindex": 1
+    }
+  ],
+  "ActiveWindow": {
+    "Filename": "/home/hoefkens/Development/Code/Python/Projects_ACTIVE/btrwin/modules/conf/show/ctl.py",
+    "Cursor": [
+      119,
+      16
+    ]
+  },
+  "Breakpoints": [],
+  "Watchpoints": [],
+  "DebugInfo": {
+    "VirtualEnv": "",
+    "ScriptName": "",
+    "CommandLine": "",
+    "WorkingDirectory": "",
+    "Environment": "",
+    "ReportExceptions": true,
+    "Exceptions": [],
+    "IgnoredExceptions": [],
+    "AutoClearShell": true,
+    "TracePython": false,
+    "AutoContinue": true,
+    "EnableMultiprocess": true,
+    "MultiprocessNoDebug": "",
+    "GlobalConfigOverride": {
+      "enable": false,
+      "redirect": true
+    }
+  },
+  "Bookmarks": [],
+  "ProjectBrowserStates": [
+    {
+      "Name": "sources",
+      "ExpandedItems": [
+        "/home/hoefkens/Development/Code/Python/Projects_ACTIVE/btrwin/fnx",
+        "/home/hoefkens/Development/Code/Python/Projects_ACTIVE/btrwin/fnx/fs",
+        "/home/hoefkens/Development/Code/Python/Projects_ACTIVE/btrwin/fnx/loader",
+        "/home/hoefkens/Development/Code/Python/Projects_ACTIVE/btrwin/fnx/prefix",
+        "/home/hoefkens/Development/Code/Python/Projects_ACTIVE/btrwin/interface",
+        "/home/hoefkens/Development/Code/Python/Projects_ACTIVE/btrwin/lib",
+        "/home/hoefkens/Development/Code/Python/Projects_ACTIVE/btrwin/lib/conf.py",
+        "/home/hoefkens/Development/Code/Python/Projects_ACTIVE/btrwin/modules",
+        "/home/hoefkens/Development/Code/Python/Projects_ACTIVE/btrwin/modules/conf",
+        "/home/hoefkens/Development/Code/Python/Projects_ACTIVE/btrwin/modules/conf/show",
+        "/home/hoefkens/Development/Code/Python/Projects_ACTIVE/btrwin/modules/conf/show/ctl.py"
+      ]
+    }
+  ]
+}

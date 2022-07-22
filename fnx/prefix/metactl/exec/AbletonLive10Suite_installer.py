@@ -2,22 +2,22 @@
 import os
 from subprocess import Popen,PIPE
 from functools import partial
-from fnx import conf
+from modules import conf
 
-config= conf.glob
+config = conf.glob
 
 env = {
 	**os.environ,
-	'WINEDEBUG' 			: 	'all',
-	'WINEARCH'				:	'win64',
-	'WINEDLLOVERRIDES'		:	'winemenubuilder.exe=d ',
-	'WINEPREFIX' 			:	'/mnt/btrd0v1/opt/BTRWin/subv/win10',
-	'WINELOADER'			:	'/mnt/btrd0v1/opt/BTRWin/run/wine/lutris-6.14-4-x86_64/bin/wine',
-	'WINESERVER'			:	'/mnt/btrd0v1/opt/BTRWin/run/wine/lutris-6.14-4-x86_64/bin/wineserver'
+	'WINEDEBUG'       : 	'all',
+	'WINEARCH'        :	'win64',
+	'WINEDLLOVERRIDES'    :	'winemenubuilder.exe=d ',
+	'WINEPREFIX'      :	'/mnt/btrd0v1/opt/BTRWin/subv/win10',
+	'WINELOADER'      :	'/mnt/btrd0v1/opt/BTRWin/run/wine/lutris-6.14-4-x86_64/bin/wine',
+	'WINESERVER'      :	'/mnt/btrd0v1/opt/BTRWin/run/wine/lutris-6.14-4-x86_64/bin/wineserver'
 }
 sproc= partial( Popen, env=env, stdout=PIPE,
-				universal_newlines=True,
-				shell=True)
+        universal_newlines=True,
+        shell=True)
 path={}
 bin={}
 path['mount']		= 	'/run/media/hoefkens/btrd0v1'

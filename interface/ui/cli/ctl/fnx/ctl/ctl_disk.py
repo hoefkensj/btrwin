@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import click as C
 import btrwin.fnx.check.ctl
-import btrwin.fnx.conf.ctl
+import btrwin.modules.conf.ctl
 import btrwin.fnx.file.ctl
 import fnx.fs.ctl
 

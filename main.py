@@ -44,6 +44,21 @@ def super_su(**k):
 	args = [f'sudo env PYTHONPATH="{os.environ.get("PYTHONPATH")}" ', sys.executable] + sys.argv # + [os.environ]
 	os.execvpe('sudo', args, os.environ)
 
+
+def reload_env(**k):
+	import sys
+	args = [f'env PYTHONPATH="{os.environ.get("PYTHONPATH")}" ', sys.executable] + sys.argv # + [os.environ]
+	PARENTFOLDER=os.path.split(os.path.split(sys.argv[0])[0])
+	if not os.environ.get("PYREL"):
+		os.environ["PYTHONPATH"]=f'{PARENTFOLDER[0]}:{os.environ.get("PYTHONPATH")}'
+		os.environ['PYREL'] = '1'
+		os.execvpe('/usr/bin/env', args, os.environ)
+
+	
+		
+
+
+
 def env_load():
 	with open('/tmp/REROOT_USER.env','rb') as f :
 		env_tmp=pickle.load(f)
@@ -54,3 +69,6 @@ def env_load():
 def env_store():
 	with open('/tmp/REROOT_USER.env' , 'wb') as f:
 		pickle.dump({**os.environ},f)
+		
+		
+reload_env()
